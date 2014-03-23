@@ -55,7 +55,7 @@ net.createServer(function (socket) {
 
   // 'metadata' event will fire when the metadata arrives and is verified to be correct!
   wire.ext('ut_metadata').on('metadata', function (metadata) {
-    // got metdata!
+    // got metadata!
 
     // Note: the event will not fire if the peer does not support ut_metadata, if they
     // don't have metadata yet either, if they repeatedly send invalid data, or if they
