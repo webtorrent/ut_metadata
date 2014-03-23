@@ -47,47 +47,6 @@ test('fetch()', function (t) {
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
 
-test('fetch() then gotMetadata()', function (t) {
-  t.plan(3)
-
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
-  wire1.pipe(wire2).pipe(wire1)
-
-  wire1.use(ut_metadata(metadata)) // wire1 already has metadata
-  wire2.use(ut_metadata()) // wire2 does not
-
-  wire2.ext('ut_metadata').fetch()
-
-  // simulate that we just got metadata from another peer, so we set it immediately.
-  // 'metadata' event should still get emitted later
-  wire2.ext('ut_metadata').gotMetadata(metadata)
-
-  wire2.ext('ut_metadata').on('metadata', function (_metadata) {
-    // got metadata!
-    t.deepEqual(_metadata, metadata)
-  })
-
-  wire2.on('handshake', function (infoHash, peerId, extensions) {
-    wire2.handshake(parsedTorrent.infoHash, id2)
-  })
-
-  wire2.on('extended', function (ext) {
-    if (ext === 'handshake') {
-      t.pass('got extended handshake')
-    } else if (ext === 'ut_metadata') {
-      t.pass('got extended ut_metadata message')
-      // this is emitted for consistency's sake, but it's ignored
-      // by the user since the ut_metadata package handles the
-      // complexities internally
-    } else {
-      t.fail('unexpected handshake type')
-    }
-  })
-
-  wire1.handshake(parsedTorrent.infoHash, id1)
-})
-
 test('fetch() from peer without metadata', function (t) {
   t.plan(1)
 

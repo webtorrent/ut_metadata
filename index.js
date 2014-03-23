@@ -23,7 +23,7 @@ module.exports = function (metadata) {
     this._bitfield = new BitField(0)
 
     if (metadata) {
-      this.gotMetadata(metadata)
+      this._gotMetadata(metadata)
     }
   }
 
@@ -89,7 +89,8 @@ module.exports = function (metadata) {
     this._fetching = false
   }
 
-  ut_metadata.prototype.gotMetadata = function (_metadata) {
+  ut_metadata.prototype._gotMetadata = function (_metadata) {
+    this.cancel()
     this.metadata = _metadata
     this._metadataComplete = true
     this._metadataSize = this.metadata.length
@@ -173,7 +174,7 @@ module.exports = function (metadata) {
 
     // TODO: verify
 
-    this.gotMetadata(this.metadata)
+    this._gotMetadata(this.metadata)
   }
 
   return ut_metadata
