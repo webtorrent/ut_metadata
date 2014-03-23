@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "bncode": "^0.5.0",
+    "bitfield": "^0.2.0",
     "inherits": "^2.0.1"
   },
   "devDependencies": {
     "tape": "2.x",
-    "bittorrent-protocol": "^1.0.0"
+    "bittorrent-protocol": "^1.0.0",
+    "parse-torrent": "^0.6.0"
   },
   "homepage": "http://webtorrent.io",
   "keywords": [
