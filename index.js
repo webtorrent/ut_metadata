@@ -106,11 +106,11 @@ module.exports = function (metadata) {
   }
 
   ut_metadata.prototype._request = function (piece) {
-    this._send({ msg_type: 0, piece: piece })
+    this._send({ msg_type: 0, piece: piece })
   }
 
   ut_metadata.prototype._data = function (piece, buf, totalSize) {
-    var msg = { msg_type: 1, piece: piece }
+    var msg = { msg_type: 1, piece: piece }
     if (typeof totalSize === 'number') {
       msg.total_size = totalSize
     }
@@ -118,7 +118,7 @@ module.exports = function (metadata) {
   }
 
   ut_metadata.prototype._reject = function (piece) {
-    this._send({ msg_type: 2, piece: piece })
+    this._send({ msg_type: 2, piece: piece })
   }
 
   ut_metadata.prototype._onRequest = function (piece) {
