@@ -14,7 +14,6 @@ test('wire.use(ut_metadata())', function (t) {
 
   t.ok(wire.ext('ut_metadata'))
   t.ok(wire.ext('ut_metadata').fetch)
-  t.ok(wire.ext('ut_metadata').gotMetadata)
   t.ok(wire.ext('ut_metadata').cancel)
   t.notOk(wire.ext('ut_metadata').metadata)
   t.end()
@@ -28,7 +27,6 @@ test('wire.use(ut_metadata(metadata))', function (t) {
 
   t.ok(wire.ext('ut_metadata'))
   t.ok(wire.ext('ut_metadata').fetch)
-  t.ok(wire.ext('ut_metadata').gotMetadata)
   t.ok(wire.ext('ut_metadata').cancel)
   t.equal(wire.ext('ut_metadata').metadata, metadata)
   t.end()
