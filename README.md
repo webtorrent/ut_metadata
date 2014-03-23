@@ -41,6 +41,10 @@ net.createServer(function (socket) {
 To add support for BEP 9, simply modify your code like this:
 
 ```js
+var Protocol = require('bittorrent-protocol')
+var net = require('net')
+var ut_metadata = require('ut_metadata')
+
 net.createServer(function (socket) {
   var wire = new Protocol()
   socket.pipe(wire).pipe(socket)
@@ -74,7 +78,6 @@ net.createServer(function (socket) {
   })
 
 }).listen(6881)
-
 ```
 
 ## methods
