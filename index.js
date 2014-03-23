@@ -37,8 +37,15 @@ module.exports = function (metadata) {
   }
 
   ut_metadata.prototype.onExtendedHandshake = function (handshake) {
+    if (!handshake.m.ut_metadata) {
+      return this.emit('warning', new Error('Peer does not support ut_metadata'))
+    }
+    if (!handshake.metadata_size) {
+      return this.emit('warning', new Error('Peer does not have metadata'))
+    }
+
     this._metadataSize = handshake.metadata_size
-    if (this._metadataSize && this._fetching) {
+    if (this._fetching) {
       this._requestPieces()
     }
   }
@@ -51,7 +58,7 @@ module.exports = function (metadata) {
       dict = bncode.decode(str.substring(0, trailerIndex))
       trailer = buf.slice(trailerIndex)
     } catch (err) {
-      this.emit('warning', new Error('Could not decode ut_metadata message'))
+      // drop invalid messages
       return
     }
 

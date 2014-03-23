@@ -48,7 +48,7 @@ test('fetch()', function (t) {
 })
 
 test('fetch() from peer without metadata', function (t) {
-  t.plan(1)
+  t.plan(2)
 
   var wire1 = new Protocol()
   var wire2 = new Protocol()
@@ -68,6 +68,10 @@ test('fetch() from peer without metadata', function (t) {
     // No messages should be sent because wire1 never sent metadata_size in the
     // extended handshake, so he doesn't have metadata
   }
+
+  wire2.ext('ut_metadata').on('warning', function (err) {
+    t.pass('got warning about peer missing metadata')
+  })
 
   wire2.on('handshake', function (infoHash, peerId, extensions) {
     wire2.handshake(parsedTorrent.infoHash, id2)
