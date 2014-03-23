@@ -1,6 +1,6 @@
 // TODO: add verification
 
-var BitField = require('BitField')
+var BitField = require('bitfield')
 var bncode = require('bncode')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
