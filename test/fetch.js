@@ -89,3 +89,33 @@ test('fetch() from peer without metadata', function (t) {
 
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
+
+test('discard invalid metadata', function (t) {
+  t.plan(1)
+
+  var wire1 = new Protocol()
+  var wire2 = new Protocol()
+  wire1.pipe(wire2).pipe(wire1)
+
+  var invalidMetadata = metadata.slice(0)
+  invalidMetadata[0] = 99 // mess up the first byte of the metadata
+
+  wire1.use(ut_metadata(invalidMetadata))
+  wire2.use(ut_metadata())
+
+  wire2.ext('ut_metadata').fetch()
+
+  wire2.ext('ut_metadata').on('metadata', function () {
+    t.fail('No "metadata" event should fire')
+  })
+
+  wire2.ext('ut_metadata').on('warning', function (err) {
+    t.pass('got warning because peer sent reject too much')
+  })
+
+  wire2.on('handshake', function (infoHash, peerId, extensions) {
+    wire2.handshake(parsedTorrent.infoHash, id2)
+  })
+
+  wire1.handshake(parsedTorrent.infoHash, id1)
+})

@@ -1,11 +1,14 @@
-// TODO: add verification
-
 var BitField = require('bitfield')
 var bncode = require('bncode')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
+var Rusha = require('rusha-browserify') // Fast SHA1 (works in browser)
 
 var PIECE_LENGTH = 16 * 1024
+
+function sha1 (buf) {
+  return (new Rusha()).digestFromBuffer(buf)
+}
 
 module.exports = function (metadata) {
 
@@ -27,13 +30,8 @@ module.exports = function (metadata) {
     }
   }
 
-  Object.defineProperty(ut_metadata.prototype, '_numPieces', {
-    get: function () {
-      return Math.ceil(this._metadataSize / PIECE_LENGTH)
-    }
-  })
-
-  ut_metadata.prototype.onHandshake = function () {
+  ut_metadata.prototype.onHandshake = function (infoHash, peerId, extensions) {
+    this._infoHash = infoHash
   }
 
   ut_metadata.prototype.onExtendedHandshake = function (handshake) {
@@ -45,6 +43,9 @@ module.exports = function (metadata) {
     }
 
     this._metadataSize = handshake.metadata_size
+    this._numPieces = Math.ceil(this._metadataSize / PIECE_LENGTH)
+    this._remainingRejects = this._numPieces * 2
+
     if (this._fetching) {
       this._requestPieces()
     }
@@ -94,15 +95,6 @@ module.exports = function (metadata) {
 
   ut_metadata.prototype.cancel = function () {
     this._fetching = false
-  }
-
-  ut_metadata.prototype._gotMetadata = function (_metadata) {
-    this.cancel()
-    this.metadata = _metadata
-    this._metadataComplete = true
-    this._metadataSize = this.metadata.length
-    this._wire.extendedHandshake.metadata_size = this._metadataSize
-    this.emit('metadata', this.metadata)
   }
 
   ut_metadata.prototype._send = function (dict, trailer) {
@@ -162,7 +154,6 @@ module.exports = function (metadata) {
 
   ut_metadata.prototype._requestPieces = function () {
     this.metadata = new Buffer(this._metadataSize)
-    this._remainingRejects = this._numPieces
 
     for (var piece = 0; piece < this._numPieces; piece++) {
       this._request(piece)
@@ -179,9 +170,39 @@ module.exports = function (metadata) {
     }
     if (!done) return
 
-    // TODO: verify
+    // check hash
+    var info
+    try {
+      info = bncode.encode(bncode.decode(this.metadata).info)
+    } catch (err) {
+      // if buffer fails to decode, then data was corrupt
+      return this._failedMetadata()
+    }
+    if (sha1(info) === this._infoHash.toString('hex')) {
+      this._gotMetadata(this.metadata)
+    } else {
+      this._failedMetadata()
+    }
 
-    this._gotMetadata(this.metadata)
+  }
+
+  ut_metadata.prototype._gotMetadata = function (_metadata) {
+    this.cancel()
+    this.metadata = _metadata
+    this._metadataComplete = true
+    this._metadataSize = this.metadata.length
+    this._wire.extendedHandshake.metadata_size = this._metadataSize
+    this.emit('metadata', this.metadata)
+  }
+
+  ut_metadata.prototype._failedMetadata = function () {
+    this._bitfield = new BitField(0) // reset bitfield & try again
+    this._remainingRejects -= this._numPieces
+    if (this._remainingRejects > 0) {
+      this._requestPieces()
+    } else {
+      this.emit('warning', new Error('Peer sent invalid metadata'))
+    }
   }
 
   return ut_metadata

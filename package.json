@@ -13,7 +13,8 @@
   "dependencies": {
     "bncode": "^0.5.0",
     "bitfield": "^0.2.0",
-    "inherits": "^2.0.1"
+    "inherits": "^2.0.1",
+    "rusha-browserify": "^0.7.3"
   },
   "devDependencies": {
     "tape": "2.x",
