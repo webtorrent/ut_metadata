@@ -12,10 +12,10 @@ test('wire.use(ut_metadata())', function (t) {
 
   wire.use(ut_metadata())
 
-  t.ok(wire.ext('ut_metadata'))
-  t.ok(wire.ext('ut_metadata').fetch)
-  t.ok(wire.ext('ut_metadata').cancel)
-  t.notOk(wire.ext('ut_metadata').metadata)
+  t.ok(wire.ut_metadata)
+  t.ok(wire.ut_metadata.fetch)
+  t.ok(wire.ut_metadata.cancel)
+  t.notOk(wire.ut_metadata.metadata)
   t.end()
 })
 
@@ -25,9 +25,9 @@ test('wire.use(ut_metadata(metadata))', function (t) {
 
   wire.use(ut_metadata(metadata))
 
-  t.ok(wire.ext('ut_metadata'))
-  t.ok(wire.ext('ut_metadata').fetch)
-  t.ok(wire.ext('ut_metadata').cancel)
-  t.equal(wire.ext('ut_metadata').metadata, metadata)
+  t.ok(wire.ut_metadata)
+  t.ok(wire.ut_metadata.fetch)
+  t.ok(wire.ut_metadata.cancel)
+  t.equal(wire.ut_metadata.metadata, metadata)
   t.end()
 })

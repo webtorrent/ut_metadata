@@ -20,9 +20,9 @@ test('fetch()', function (t) {
   wire1.use(ut_metadata(metadata)) // wire1 already has metadata
   wire2.use(ut_metadata()) // wire2 does not
 
-  wire2.ext('ut_metadata').fetch()
+  wire2.ut_metadata.fetch()
 
-  wire2.ext('ut_metadata').on('metadata', function (_metadata) {
+  wire2.ut_metadata.on('metadata', function (_metadata) {
     // got metadata!
     t.deepEqual(_metadata, metadata)
   })
@@ -57,19 +57,19 @@ test('fetch() from peer without metadata', function (t) {
   wire1.use(ut_metadata()) // neither wire has metadata
   wire2.use(ut_metadata())
 
-  wire2.ext('ut_metadata').fetch()
+  wire2.ut_metadata.fetch()
 
-  wire2.ext('ut_metadata').on('metadata', function () {
+  wire2.ut_metadata.on('metadata', function () {
     t.fail('No "metadata" event should fire')
   })
 
-  wire1.ext('ut_metadata').onMessage = function () {
+  wire1.ut_metadata.onMessage = function () {
     t.fail('No messages should be sent to wire1')
     // No messages should be sent because wire1 never sent metadata_size in the
     // extended handshake, so he doesn't have metadata
   }
 
-  wire2.ext('ut_metadata').on('warning', function (err) {
+  wire2.ut_metadata.on('warning', function (err) {
     t.pass('got warning about peer missing metadata')
   })
 
@@ -103,13 +103,13 @@ test('discard invalid metadata', function (t) {
   wire1.use(ut_metadata(invalidMetadata))
   wire2.use(ut_metadata())
 
-  wire2.ext('ut_metadata').fetch()
+  wire2.ut_metadata.fetch()
 
-  wire2.ext('ut_metadata').on('metadata', function () {
+  wire2.ut_metadata.on('metadata', function () {
     t.fail('No "metadata" event should fire')
   })
 
-  wire2.ext('ut_metadata').on('warning', function (err) {
+  wire2.ut_metadata.on('warning', function (err) {
     t.pass('got warning because peer sent reject too much')
   })
 

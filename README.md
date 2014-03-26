@@ -52,13 +52,13 @@ net.createServer(function (socket) {
   // initialize the extension
   wire.use(ut_metadata())
 
-  // all `ut_metadata` functionality can now be accessed at wire.ext('ut_metadata')
+  // all `ut_metadata` functionality can now be accessed at wire.ut_metadata
 
   // ask the peer to send us metadata
-  wire.ext('ut_metadata').fetch()
+  wire.ut_metadata.fetch()
 
   // 'metadata' event will fire when the metadata arrives and is verified to be correct!
-  wire.ext('ut_metadata').on('metadata', function (metadata) {
+  wire.ut_metadata.on('metadata', function (metadata) {
     // got metadata!
 
     // Note: the event will not fire if the peer does not support ut_metadata, if they
@@ -68,7 +68,7 @@ net.createServer(function (socket) {
 
   // optionally, listen to the 'warning' event if you want to know that metadata is
   // probably not going to arrive for one of the above reasons.
-  wire.ext('ut_metadata').on('warning', function (err) {
+  wire.ut_metadata.on('warning', function (err) {
     console.log(err.message)
   })
 
@@ -87,7 +87,7 @@ net.createServer(function (socket) {
 Ask the peer to send metadata.
 
 ```js
-wire.ext('ut_metadata').fetch()
+wire.ut_metadata.fetch()
 ```
 
 ### cancel
@@ -95,7 +95,7 @@ wire.ext('ut_metadata').fetch()
 Stop asking the peer to send metadata.
 
 ```js
-wire.ext('ut_metadata').cancel()
+wire.ut_metadata.cancel()
 ```
 
 ### event: 'metadata'
@@ -104,7 +104,7 @@ Fired when metadata is available and verified to be correct. Called with a singl
 parameter of type Buffer.
 
 ```js
-wire.ext('ut_metadata').on('metadata', function (metadata) {
+wire.ut_metadata.on('metadata', function (metadata) {
   console.log(Buffer.isBuffer(metadata)) // true
 })
 ```
@@ -121,7 +121,7 @@ Fired if:
  - the repeatedly sent invalid data
 
 ```js
-wire.ext('ut_metadata').on('warning', function (err) {
+wire.ut_metadata.on('warning', function (err) {
   console.log(err.message)
 })
 ```
