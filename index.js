@@ -25,7 +25,7 @@ module.exports = function (metadata) {
     this._fetching = false
     this._bitfield = new BitField(0)
 
-    if (metadata) {
+    if (Buffer.isBuffer(metadata)) {
       this._gotMetadata(metadata)
     }
   }
