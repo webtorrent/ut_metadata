@@ -3,17 +3,11 @@
   "version": "0.0.0",
   "author": "Feross Aboukhadijeh <feross@feross.org> (http://feross.org/)",
   "browserify": {
-    "transform": [
-      "brfs"
-    ]
+    "transform": ["brfs"]
   },
-  "main": "basic.js",
+  "license": "MIT",
+  "main": "index.js",
   "scripts": {
-    "test": "tape *.js"
-  },
-  "devDependencies": {
-    "tape": "^2.12.0",
-    "brfs": "^1.0.0",
-    "browserify": "^3.33.1"
+    "test": "tape test/*.js"
   }
 }
