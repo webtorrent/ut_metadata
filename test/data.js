@@ -29,6 +29,9 @@ test('leeches info', function (t) {
   t.equal(metadata.complete, false);
 
   var wire = new process.EventEmitter();
+  wire.use = function(ext) {
+      wire[ext.name] = new ext(wire);
+  };
   metadata.on('complete', function(completeInfo) {
       t.deepEquals(completeInfo, info, 'Info dictionaries match');
       t.equal(metadata.complete, true);
@@ -45,15 +48,15 @@ test('leeches info', function (t) {
               }),
               infoBuf.slice(offset, offset + PIECE_SIZE)
           ]);
-          wire.emit('extended', 'ut_metadata', buf);
+          wire.ut_metadata.onMessage(buf);
       }
   };
   swarm.emit('wire', wire);
 
-  wire.emit('extended', 'handshake', {
+  wire.ut_metadata.onExtendedHandshake({
       m: {
           ut_metadata: 1
       },
       metadata_size: infoBuf.length
-  }, new Buffer([]));
+  });
 });
