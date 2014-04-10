@@ -1,4 +1,4 @@
-# ut_metadata [![travis](http://img.shields.io/travis/feross/ut_metadata.svg)](https://travis-ci.org/feross/ut_metadata) [![npm](http://img.shields.io/npm/v/ut_metadata.svg)](https://npmjs.org/package/ut_metadata) [![gittip](http://img.shields.io/gittip/feross.svg)](https://www.gittip.com/feross/)
+# ut_metadata [![travis](https://img.shields.io/travis/feross/ut_metadata.svg)](https://travis-ci.org/feross/ut_metadata) [![npm](https://img.shields.io/npm/v/ut_metadata.svg)](https://npmjs.org/package/ut_metadata) [![gittip](https://img.shields.io/gittip/feross.svg)](https://www.gittip.com/feross/)
 
 ### BitTorrent Extension for Peers to Send Metadata Files (BEP 9)
 
