@@ -11,7 +11,7 @@
     "url": "https://github.com/feross/ut_metadata/issues"
   },
   "dependencies": {
-    "bitfield": "^0.2.0",
+    "bitfield": "^1.0.1",
     "bncode": "^0.5.0",
     "inherits": "^2.0.1",
     "rusha-browserify": "^0.7.3"
