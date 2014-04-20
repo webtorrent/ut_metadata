@@ -4,7 +4,7 @@ var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
 var Rusha = require('rusha-browserify') // Fast SHA1 (works in browser)
 
-var BITFIELD_GROW = 100000
+var BITFIELD_GROW = 1000
 var PIECE_LENGTH = 16 * 1024
 
 function sha1 (buf) {
@@ -25,9 +25,9 @@ module.exports = function (metadata) {
     this._remainingRejects = null // how many reject messages to tolerate before quitting
     this._fetching = false
 
-    // The largest torrent that I know of (the Geocities archive) is ~641 GB and has
-    // ~41,000 pieces. Therefore, cap the bitfield to 100,000 bits so a malicious peer
-    // can't make it grow to fill all memory.
+    // The largest .torrent file that I know of is ~1-2MB, which is ~100 pieces.
+    // Therefore, cap the bitfield to 1,000 bits so a malicious peer can't make it grow
+    // to fill all memory.
     this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
 
     if (Buffer.isBuffer(metadata)) {
