@@ -127,15 +127,16 @@ module.exports = function (metadata) {
   }
 
   ut_metadata.prototype._onRequest = function (piece) {
-    if (this._metadataComplete) {
-      var start = piece * PIECE_LENGTH
-      var end = start + PIECE_LENGTH
-      if (end > this._metadataSize) {
-        end = this._metadataSize
-      }
-      var buf = this.metadata.slice(start, end)
-      this._data(piece, buf, this._metadataSize)
+    if (!this._metadataComplete) {
+      return
     }
+    var start = piece * PIECE_LENGTH
+    var end = start + PIECE_LENGTH
+    if (end > this._metadataSize) {
+      end = this._metadataSize
+    }
+    var buf = this.metadata.slice(start, end)
+    this._data(piece, buf, this._metadataSize)
   }
 
   ut_metadata.prototype._onData = function (piece, buf, totalSize) {
