@@ -176,20 +176,19 @@ module.exports = function (metadata) {
     }
     if (!done) return
 
-    // check hash
-    var info
     try {
-      info = bncode.encode(bncode.decode(this.metadata))
-    } catch (err) {
       // if buffer fails to decode, then data was corrupt
+      bncode.decode(this.metadata)
+    } catch (err) {
       return this._failedMetadata()
     }
-    if (info && sha1(info) === this._infoHash.toString('hex')) {
-      this._gotMetadata(bncode.encode({ info : bncode.decode(this.metadata) }))
+
+    // check hash
+    if (sha1(this.metadata) === this._infoHash.toString('hex')) {
+      this._gotMetadata(bncode.encode({ info: bncode.decode(this.metadata) }))
     } else {
       this._failedMetadata()
     }
-
   }
 
   ut_metadata.prototype._gotMetadata = function (_metadata) {
