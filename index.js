@@ -179,13 +179,13 @@ module.exports = function (metadata) {
     // check hash
     var info
     try {
-      info = bncode.encode(bncode.decode(this.metadata).info)
+      info = bncode.encode(bncode.decode(this.metadata))
     } catch (err) {
       // if buffer fails to decode, then data was corrupt
       return this._failedMetadata()
     }
-    if (sha1(info) === this._infoHash.toString('hex')) {
-      this._gotMetadata(this.metadata)
+    if (info && sha1(info) === this._infoHash.toString('hex')) {
+      this._gotMetadata(bncode.encode({ info : bncode.decode(this.metadata) }))
     } else {
       this._failedMetadata()
     }
