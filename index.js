@@ -31,7 +31,17 @@ module.exports = function (metadata) {
     this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
 
     if (Buffer.isBuffer(metadata)) {
-      this._gotMetadata(metadata)
+      var info = null
+      try {
+        // if buffer fails to decode or there is no info key, then metadata is corrupt
+        info = bncode.encode(bncode.decode(metadata).info)
+      } catch (err) {
+        // TODO: throw or disregard invalid metadata?
+        //throw new Error('ut_metadata constructed with invalid metadata')
+      }
+      
+      if (info)
+        this._gotMetadata(info)
     }
   }
 
@@ -185,7 +195,7 @@ module.exports = function (metadata) {
 
     // check hash
     if (sha1(this.metadata) === this._infoHash.toString('hex')) {
-      this._gotMetadata(bncode.encode({ info: bncode.decode(this.metadata) }))
+      this._gotMetadata(this.metadata)
     } else {
       this._failedMetadata()
     }
@@ -197,7 +207,7 @@ module.exports = function (metadata) {
     this._metadataComplete = true
     this._metadataSize = this.metadata.length
     this._wire.extendedHandshake.metadata_size = this._metadataSize
-    this.emit('metadata', this.metadata)
+    this.emit('metadata', bncode.encode({ info: bncode.decode(this.metadata) }))
   }
 
   ut_metadata.prototype._failedMetadata = function () {

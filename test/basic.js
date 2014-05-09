@@ -1,6 +1,7 @@
 var fs = require('fs')
 var Protocol = require('bittorrent-protocol')
 var ut_metadata = require('../')
+var bncode = require('bncode')
 var test = require('tape')
 
 // Used in multiple tests
@@ -28,6 +29,6 @@ test('wire.use(ut_metadata(metadata))', function (t) {
   t.ok(wire.ut_metadata)
   t.ok(wire.ut_metadata.fetch)
   t.ok(wire.ut_metadata.cancel)
-  t.equal(wire.ut_metadata.metadata, metadata)
+  t.equal(wire.ut_metadata.metadata.toString('hex'), bncode.encode(bncode.decode(metadata).info).toString('hex'))
   t.end()
 })
