@@ -2,11 +2,16 @@ var fs = require('fs')
 var parseTorrent = require('parse-torrent')
 var Protocol = require('bittorrent-protocol')
 var ut_metadata = require('../')
+var bncode = require('bncode')
 var test = require('tape')
 
 // Used in multiple tests
 var metadata = fs.readFileSync(__dirname + '/torrents/leaves-magnet.torrent')
 var parsedTorrent = parseTorrent(metadata)
+
+var largeMetadata = fs.readFileSync(__dirname + '/torrents/ubuntu-12.04.4-alternate-amd64.iso.torrent')
+var largeParsedTorrent = parseTorrent(largeMetadata)
+
 var id1 = new Buffer('01234567890123456789')
 var id2 = new Buffer('12345678901234567890')
 
@@ -24,7 +29,7 @@ test('fetch()', function (t) {
 
   wire2.ut_metadata.on('metadata', function (_metadata) {
     // got metadata!
-    t.deepEqual(_metadata, metadata)
+    t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(metadata).info }).toString('hex'))
   })
 
   wire2.on('handshake', function (infoHash, peerId, extensions) {
@@ -90,6 +95,45 @@ test('fetch() from peer without metadata', function (t) {
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
 
+test('fetch() large torrent', function (t) {
+  t.plan(4)
+
+  var wire1 = new Protocol()
+  var wire2 = new Protocol()
+  wire1.pipe(wire2).pipe(wire1)
+
+  wire1.use(ut_metadata(largeMetadata)) // wire1 already has metadata
+  wire2.use(ut_metadata()) // wire2 does not
+
+  wire2.ut_metadata.fetch()
+
+  wire2.ut_metadata.on('metadata', function (_metadata) {
+    // got metadata!
+    t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(largeMetadata).info }).toString('hex'))
+  })
+
+  wire2.on('handshake', function (infoHash, peerId, extensions) {
+    wire2.handshake(largeParsedTorrent.infoHash, id2)
+  })
+
+  wire2.on('extended', function (ext) {
+    if (ext === 'handshake') {
+      t.pass('got extended handshake')
+    } else if (ext === 'ut_metadata') {
+      // note: this should get called twice, once for each block of the ubuntu metadata
+      t.pass('got extended ut_metadata message')
+      
+      // this is emitted for consistency's sake, but it's ignored
+      // by the user since the ut_metadata package handles the
+      // complexities internally
+    } else {
+      t.fail('unexpected handshake type')
+    }
+  })
+
+  wire1.handshake(largeParsedTorrent.infoHash, id1)
+})
+
 test('discard invalid metadata', function (t) {
   t.plan(1)
 
@@ -119,3 +163,4 @@ test('discard invalid metadata', function (t) {
 
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
+
