@@ -36,10 +36,9 @@ module.exports = function (metadata) {
         // if buffer fails to decode or there is no info key, then metadata is corrupt
         info = bncode.encode(bncode.decode(metadata).info)
       } catch (err) {
-        // TODO: throw or disregard invalid metadata?
-        //throw new Error('ut_metadata constructed with invalid metadata')
+        throw new Error('`ut_metadata` constructed with corrupt/invalid metadata')
       }
-      
+
       if (info)
         this._gotMetadata(info)
     }
