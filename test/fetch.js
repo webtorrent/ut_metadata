@@ -122,7 +122,7 @@ test('fetch() large torrent', function (t) {
     } else if (ext === 'ut_metadata') {
       // note: this should get called twice, once for each block of the ubuntu metadata
       t.pass('got extended ut_metadata message')
-      
+
       // this is emitted for consistency's sake, but it's ignored
       // by the user since the ut_metadata package handles the
       // complexities internally
@@ -142,7 +142,7 @@ test('discard invalid metadata', function (t) {
   wire1.pipe(wire2).pipe(wire1)
 
   var invalidMetadata = metadata.slice(0)
-  invalidMetadata[0] = 99 // mess up the first byte of the metadata
+  invalidMetadata[55] = 65 // mess up a byte in the info block
 
   wire1.use(ut_metadata(invalidMetadata))
   wire2.use(ut_metadata())
@@ -163,4 +163,3 @@ test('discard invalid metadata', function (t) {
 
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
-
