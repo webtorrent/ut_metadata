@@ -49,7 +49,7 @@ module.exports = function (metadata) {
   }
 
   ut_metadata.prototype.onExtendedHandshake = function (handshake) {
-    if (!handshake.m.ut_metadata) {
+    if (!handshake.m || !handshake.m.ut_metadata) {
       return this.emit('warning', new Error('Peer does not support ut_metadata'))
     }
     if (!handshake.metadata_size) {
