@@ -35,6 +35,9 @@ module.exports = function (metadata) {
     }
   }
 
+  // For IE support. Since function.name does not work in IE.
+  ut_metadata.prototype.name = 'ut_metadata'
+
   ut_metadata.prototype.onHandshake = function (infoHash, peerId, extensions) {
     this._infoHash = infoHash
   }
