@@ -40,7 +40,7 @@ module.exports = function (metadata) {
       }
 
       if (info)
-        this._gotMetadata(info)
+        this.setMetadata(info)
     }
   }
 
@@ -96,7 +96,10 @@ module.exports = function (metadata) {
     }
   }
 
-  // Expose high-level, friendly API (fetch/cancel)
+  /**
+   * Ask the peer to send metadata.
+   * @public
+   */
   ut_metadata.prototype.fetch = function () {
     if (this._metadataComplete) {
       return
@@ -107,8 +110,22 @@ module.exports = function (metadata) {
     }
   }
 
+  /**
+   * Stop asking the peer to send metadata.
+   * @public
+   */
   ut_metadata.prototype.cancel = function () {
     this._fetching = false
+  }
+
+  ut_metadata.prototype.setMetadata = function (_metadata) {
+    if (this._metadataComplete) return
+    this._metadataComplete = true
+    this.metadata = _metadata
+    this._metadataSize = this.metadata.length
+    this.cancel()
+    this._wire.extendedHandshake.metadata_size = this._metadataSize
+    this.emit('metadata', bncode.encode({ info: bncode.decode(this.metadata) }))
   }
 
   ut_metadata.prototype._send = function (dict, trailer) {
@@ -195,19 +212,10 @@ module.exports = function (metadata) {
 
     // check hash
     if (sha1(this.metadata) === this._infoHash.toString('hex')) {
-      this._gotMetadata(this.metadata)
+      this.setMetadata(this.metadata)
     } else {
       this._failedMetadata()
     }
-  }
-
-  ut_metadata.prototype._gotMetadata = function (_metadata) {
-    this.cancel()
-    this.metadata = _metadata
-    this._metadataComplete = true
-    this._metadataSize = this.metadata.length
-    this._wire.extendedHandshake.metadata_size = this._metadataSize
-    this.emit('metadata', bncode.encode({ info: bncode.decode(this.metadata) }))
   }
 
   ut_metadata.prototype._failedMetadata = function () {
