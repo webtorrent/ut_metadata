@@ -137,6 +137,7 @@ module.exports = function (metadata) {
 
   ut_metadata.prototype._onRequest = function (piece) {
     if (!this._metadataComplete) {
+      this._reject(piece)
       return
     }
     var start = piece * PIECE_LENGTH
