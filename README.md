@@ -96,27 +96,15 @@ wire.use(ut_metadata(metadata))
 
 Ask the peer to send metadata.
 
-```js
-wire.ut_metadata.fetch()
-```
-
 #### `ut_metadata.cancel()`
 
 Stop asking the peer to send metadata.
-
-```js
-wire.ut_metadata.cancel()
-```
 
 #### `ut_metadata.setMetadata(metadata)`
 
 Set the metadata. If you didn't have the metadata at the time `ut_metadata` was
 initialized, but you end up getting it from another peer (or somewhere else), you should
 call `setMetadata` so the metadata will be available to the peer.
-
-```js
-wire.ut_metadata.setMetadata(metadata)
-```
 
 #### `ut_metadata.on('metadata', function (metadata) {})`
 
