@@ -95,6 +95,50 @@ test('fetch() from peer without metadata', function (t) {
   wire1.handshake(parsedTorrent.infoHash, id1)
 })
 
+test('fetch when peer gets metadata later (setMetadata)', function (t) {
+  t.plan(3)
+
+  var wire1 = new Protocol()
+  var wire2 = new Protocol()
+  wire1.pipe(wire2).pipe(wire1)
+
+  wire1.use(ut_metadata()) // wire1 starts without metadata
+
+  process.nextTick(function () {
+    wire1.ut_metadata.setMetadata(metadata) // wire1 gets metadata later
+
+    process.nextTick(function () {
+      // wire2 does not start with metadata, but connects to wire1 after it gets metadata
+      wire2.use(ut_metadata())
+      wire2.ut_metadata.fetch()
+
+      wire2.ut_metadata.on('metadata', function (_metadata) {
+        // got metadata!
+        t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(metadata).info }).toString('hex'))
+      })
+
+      wire2.on('handshake', function (infoHash, peerId, extensions) {
+        wire2.handshake(parsedTorrent.infoHash, id2)
+      })
+
+      wire2.on('extended', function (ext) {
+        if (ext === 'handshake') {
+          t.pass('got extended handshake')
+        } else if (ext === 'ut_metadata') {
+          t.pass('got extended ut_metadata message')
+          // this is emitted for consistency's sake, but it's ignored
+          // by the user since the ut_metadata package handles the
+          // complexities internally
+        } else {
+          t.fail('unexpected handshake type')
+        }
+      })
+
+      wire1.handshake(parsedTorrent.infoHash, id1)
+    })
+  })
+})
+
 test('fetch() large torrent', function (t) {
   t.plan(4)
 
