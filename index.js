@@ -31,16 +31,7 @@ module.exports = function (metadata) {
     this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
 
     if (Buffer.isBuffer(metadata)) {
-      var info = null
-      try {
-        // if buffer fails to decode or there is no info key, then metadata is corrupt
-        info = bncode.encode(bncode.decode(metadata).info)
-      } catch (err) {
-        throw new Error('`ut_metadata` constructed with corrupt/invalid metadata')
-      }
-
-      if (info)
-        this.setMetadata(info)
+      this.setMetadata(metadata)
     }
   }
 
@@ -118,14 +109,32 @@ module.exports = function (metadata) {
     this._fetching = false
   }
 
-  ut_metadata.prototype.setMetadata = function (_metadata) {
-    if (this._metadataComplete) return
-    this._metadataComplete = true
-    this.metadata = _metadata
-    this._metadataSize = this.metadata.length
+  ut_metadata.prototype.setMetadata = function (metadata) {
+    if (this._metadataComplete) return true
+
+    // if full torrent dictionary was passed in, pull out just `info` key
+    try {
+      var info = bncode.decode(metadata).info
+      if (info) {
+        metadata = bncode.encode(info)
+      }
+    } catch (err) {}
+
+    // check hash
+    if (this._infoHash && this._infoHash.toString('hex') !== sha1(metadata)) {
+      return false
+    }
+
     this.cancel()
+
+    this.metadata = metadata
+    this._metadataComplete = true
+    this._metadataSize = this.metadata.length
     this._wire.extendedHandshake.metadata_size = this._metadataSize
+
     this.emit('metadata', bncode.encode({ info: bncode.decode(this.metadata) }))
+
+    return true
   }
 
   ut_metadata.prototype._send = function (dict, trailer) {
@@ -203,17 +212,10 @@ module.exports = function (metadata) {
     }
     if (!done) return
 
-    try {
-      // if buffer fails to decode, then data was corrupt
-      bncode.decode(this.metadata)
-    } catch (err) {
-      return this._failedMetadata()
-    }
+    // attempt to set metadata -- may fail sha1 check
+    var success = this.setMetadata(this.metadata)
 
-    // check hash
-    if (sha1(this.metadata) === this._infoHash.toString('hex')) {
-      this.setMetadata(this.metadata)
-    } else {
+    if (!success) {
       this._failedMetadata()
     }
   }
