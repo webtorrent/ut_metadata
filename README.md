@@ -126,7 +126,7 @@ simply don't respond.
 Fired if:
  - the peer does not support ut_metadata
  - the peer doesn't have metadata yet
- - the repeatedly sent invalid data
+ - the peer repeatedly sent invalid data
 
 ```js
 wire.ut_metadata.on('warning', function (err) {
