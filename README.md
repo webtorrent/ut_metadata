@@ -4,19 +4,19 @@
 
 [![browser support](https://ci.testling.com/feross/ut_metadata.png)](https://ci.testling.com/feross/ut_metadata)
 
-Node.js implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html).
+Node.js implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html). Use with [bittorrent-protocol](https://github.com/feross/bittorrent-protocol).
 
 The purpose of this extension is to allow clients to join a swarm and complete a download without the need of downloading a .torrent file first. This extension instead allows clients to download the metadata from peers. It makes it possible to support magnet links, a link on a web page only containing enough information to join the swarm (the info hash).
 
 Works in the browser with [browserify](http://browserify.org/)! This module is used by [WebTorrent](http://webtorrent.io).
 
-## install
+### install
 
 ```
 npm install ut_metadata
 ```
 
-## usage
+### usage
 
 This package should be used with [bittorrent-protocol](https://github.com/feross/bittorrent-protocol), which supports a plugin-like system for extending the protocol with additional functionality.
 
@@ -80,9 +80,19 @@ net.createServer(function (socket) {
 }).listen(6881)
 ```
 
-## methods
+### api
 
-### fetch
+#### `ut_metadata([metadata])`
+
+Initialize the extension. If you have the torrent metadata (Buffer), pass it into the
+`ut_metadata` constructor so it's made available to the peer.
+
+```js
+var metadata = fs.readFileSync(__dirname + '/file.torrent')
+wire.use(ut_metadata(metadata))
+```
+
+#### `ut_metadata.fetch()`
 
 Ask the peer to send metadata.
 
@@ -90,7 +100,7 @@ Ask the peer to send metadata.
 wire.ut_metadata.fetch()
 ```
 
-### cancel
+#### `ut_metadata.cancel()`
 
 Stop asking the peer to send metadata.
 
@@ -98,7 +108,17 @@ Stop asking the peer to send metadata.
 wire.ut_metadata.cancel()
 ```
 
-### event: 'metadata'
+#### `ut_metadata.setMetadata(metadata)`
+
+Set the metadata. If you didn't have the metadata at the time `ut_metadata` was
+initialized, but you end up getting it from another peer (or somewhere else), you should
+call `setMetadata` so the metadata will be available to the peer.
+
+```js
+wire.ut_metadata.setMetadata(metadata)
+```
+
+#### `ut_metadata.on('metadata', function (metadata) {})`
 
 Fired when metadata is available and verified to be correct. Called with a single
 parameter of type Buffer.
@@ -113,7 +133,7 @@ Note: the event will not fire if the peer does not support ut_metadata, if they
 don't have metadata yet either, if they repeatedly send invalid data, or if they
 simply don't respond.
 
-### event: 'warning'
+#### `ut_metadata.on('warning', function (err) {})`
 
 Fired if:
  - the peer does not support ut_metadata
@@ -126,6 +146,6 @@ wire.ut_metadata.on('warning', function (err) {
 })
 ```
 
-## license
+### license
 
 MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org).
