@@ -1,5 +1,5 @@
 var BitField = require('bitfield')
-var bncode = require('bncode')
+var bencode = require('bencode')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
 var Rusha = require('rusha-browserify') // Fast SHA1 (works in browser)
@@ -64,7 +64,7 @@ module.exports = function (metadata) {
     try {
       var str = buf.toString()
       var trailerIndex = str.indexOf('ee') + 2
-      dict = bncode.decode(str.substring(0, trailerIndex))
+      dict = bencode.decode(str.substring(0, trailerIndex))
       trailer = buf.slice(trailerIndex)
     } catch (err) {
       // drop invalid messages
@@ -117,9 +117,9 @@ module.exports = function (metadata) {
 
     // if full torrent dictionary was passed in, pull out just `info` key
     try {
-      var info = bncode.decode(metadata).info
+      var info = bencode.decode(metadata).info
       if (info) {
-        metadata = bncode.encode(info)
+        metadata = bencode.encode(info)
       }
     } catch (err) {}
 
@@ -135,13 +135,13 @@ module.exports = function (metadata) {
     this._metadataSize = this.metadata.length
     this._wire.extendedHandshake.metadata_size = this._metadataSize
 
-    this.emit('metadata', bncode.encode({ info: bncode.decode(this.metadata) }))
+    this.emit('metadata', bencode.encode({ info: bencode.decode(this.metadata) }))
 
     return true
   }
 
   ut_metadata.prototype._send = function (dict, trailer) {
-    var buf = bncode.encode(dict)
+    var buf = bencode.encode(dict)
     if (Buffer.isBuffer(trailer)) {
       buf = Buffer.concat([buf, trailer])
     }

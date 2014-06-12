@@ -2,7 +2,7 @@ var fs = require('fs')
 var parseTorrent = require('parse-torrent')
 var Protocol = require('bittorrent-protocol')
 var ut_metadata = require('../')
-var bncode = require('bncode')
+var bencode = require('bencode')
 var test = require('tape')
 
 // Used in multiple tests
@@ -29,7 +29,7 @@ test('fetch()', function (t) {
 
   wire2.ut_metadata.on('metadata', function (_metadata) {
     // got metadata!
-    t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(metadata).info }).toString('hex'))
+    t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(metadata).info }).toString('hex'))
   })
 
   wire2.on('handshake', function (infoHash, peerId, extensions) {
@@ -114,7 +114,7 @@ test('fetch when peer gets metadata later (setMetadata)', function (t) {
 
       wire2.ut_metadata.on('metadata', function (_metadata) {
         // got metadata!
-        t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(metadata).info }).toString('hex'))
+        t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(metadata).info }).toString('hex'))
       })
 
       wire2.on('handshake', function (infoHash, peerId, extensions) {
@@ -153,7 +153,7 @@ test('fetch() large torrent', function (t) {
 
   wire2.ut_metadata.on('metadata', function (_metadata) {
     // got metadata!
-    t.equal(_metadata.toString('hex'), bncode.encode({ info: bncode.decode(largeMetadata).info }).toString('hex'))
+    t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(largeMetadata).info }).toString('hex'))
   })
 
   wire2.on('handshake', function (infoHash, peerId, extensions) {
