@@ -13,8 +13,8 @@
   "dependencies": {
     "bencode": "^0.6.0",
     "bitfield": "^1.0.1",
-    "inherits": "^2.0.1",
-    "rusha-browserify": "^0.7.3"
+    "buffer-equal": "0.0.1",
+    "inherits": "^2.0.1"
   },
   "devDependencies": {
     "bittorrent-protocol": "^1.0.0",

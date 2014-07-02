@@ -1,14 +1,16 @@
-var BitField = require('bitfield')
 var bencode = require('bencode')
+var BitField = require('bitfield')
+var bufferEqual = require('buffer-equal')
+var crypto = require('crypto')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
-var Rusha = require('rusha-browserify') // Fast SHA1 (works in browser)
 
 var BITFIELD_GROW = 1000
 var PIECE_LENGTH = 16 * 1024
 
+// Return sha1 hash **as a buffer**
 function sha1 (buf) {
-  return (new Rusha()).digestFromBuffer(buf)
+  return crypto.createHash('sha1').update(buf).digest()
 }
 
 module.exports = function (metadata) {
@@ -124,7 +126,7 @@ module.exports = function (metadata) {
     } catch (err) {}
 
     // check hash
-    if (this._infoHash && this._infoHash.toString('hex') !== sha1(metadata)) {
+    if (this._infoHash && !bufferEqual(this._infoHash, sha1(metadata))) {
       return false
     }
 
