@@ -5,6 +5,7 @@ var crypto = require('crypto')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
 
+var MAX_METADATA_SIZE = 10000000 // 10MB
 var BITFIELD_GROW = 1000
 var PIECE_LENGTH = 16 * 1024
 
@@ -28,8 +29,8 @@ module.exports = function (metadata) {
     this._fetching = false
 
     // The largest .torrent file that I know of is ~1-2MB, which is ~100 pieces.
-    // Therefore, cap the bitfield to 1,000 bits so a malicious peer can't make it grow
-    // to fill all memory.
+    // Therefore, cap the bitfield to 10x that (1000 pieces) so a malicious peer can't
+    // make it grow to fill all memory.
     this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
 
     if (Buffer.isBuffer(metadata)) {
@@ -50,6 +51,10 @@ module.exports = function (metadata) {
     }
     if (!handshake.metadata_size) {
       return this.emit('warning', new Error('Peer does not have metadata'))
+    }
+
+    if (handshake.metadata_size > MAX_METADATA_SIZE) {
+      return this.emit('warning', new Error('Peer gave maliciously large metadata size'))
     }
 
     this._metadataSize = handshake.metadata_size
