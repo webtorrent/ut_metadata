@@ -2,7 +2,7 @@ var bencode = require('bencode')
 var BitField = require('bitfield')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
-var sha1 = require('git-sha1')
+var sha1 = require('simple-sha1')
 
 var MAX_METADATA_SIZE = 10000000 // 10MB
 var BITFIELD_GROW = 1000
@@ -126,7 +126,7 @@ module.exports = function (metadata) {
     } catch (err) {}
 
     // check hash
-    if (this._infoHashHex && this._infoHashHex !== sha1(metadata)) {
+    if (this._infoHashHex && this._infoHashHex !== sha1.sync(metadata)) {
       return false
     }
 

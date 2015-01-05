@@ -13,8 +13,8 @@
   "dependencies": {
     "bencode": "^0.6.0",
     "bitfield": "^1.0.1",
-    "git-sha1": "^0.1.2",
-    "inherits": "^2.0.1"
+    "inherits": "^2.0.1",
+    "simple-sha1": "^2.0.0"
   },
   "devDependencies": {
     "bittorrent-protocol": "^1.0.0",
