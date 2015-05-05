@@ -1,7 +1,7 @@
 {
   "name": "ut_metadata",
   "description": "Extension for Peers to Send Metadata Files (BEP 9)",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "author": {
     "name": "Feross Aboukhadijeh",
     "email": "feross@feross.org",
