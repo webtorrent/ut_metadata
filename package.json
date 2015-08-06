@@ -22,7 +22,6 @@
     "parse-torrent": "^4.0.0",
     "tape": "^4.0.0"
   },
-  "homepage": "http://webtorrent.io",
   "keywords": [
     "torrent",
     "bittorrent",
