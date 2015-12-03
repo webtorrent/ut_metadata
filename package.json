@@ -24,16 +24,16 @@
     "tape": "^4.0.0"
   },
   "keywords": [
-    "torrent",
-    "bittorrent",
-    "ut_metadata",
-    "bep_0009",
-    "bep 9",
-    "bep",
     "9",
     "Extension for Peers to Send Metadata Files",
+    "bep",
+    "bep 9",
+    "bep_0009",
+    "bittorrent",
     "metadata",
-    "p2p"
+    "p2p",
+    "torrent",
+    "ut_metadata"
   ],
   "license": "MIT",
   "main": "index.js",
@@ -42,16 +42,9 @@
     "url": "git://github.com/feross/ut_metadata.git"
   },
   "scripts": {
-    "test": "standard && tape test/*.js"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/10..latest",
-      "chrome/25..latest",
-      "firefox/20..latest",
-      "safari/6..latest",
-      "opera/15.0..latest"
-    ]
+    "test": "standard && npm run test-node && npm run test-browser",
+    "test-browser": "zuul -- test/*.js",
+    "test-browser-local": "zuul --local -- test/*.js",
+    "test-node": "tape test/*.js"
   }
 }
