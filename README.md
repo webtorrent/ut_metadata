@@ -9,7 +9,7 @@
 
 ### BitTorrent Extension for Peers to Send Metadata Files (BEP 9)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/bittorrent-swarm.svg)](https://saucelabs.com/u/bittorrent-swarm)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/ut_metadata.svg)](https://saucelabs.com/u/ut_metadata)
 
 Node.js implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html). Use with [bittorrent-protocol](https://github.com/feross/bittorrent-protocol).
 
