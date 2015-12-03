@@ -74,7 +74,7 @@ test('fetch() from peer without metadata', function (t) {
     // extended handshake, so he doesn't have metadata
   }
 
-  wire2.ut_metadata.on('warning', function (err) {
+  wire2.ut_metadata.on('warning', function () {
     t.pass('got warning about peer missing metadata')
   })
 
@@ -197,7 +197,7 @@ test('discard invalid metadata', function (t) {
     t.fail('No "metadata" event should fire')
   })
 
-  wire2.ut_metadata.on('warning', function (err) {
+  wire2.ut_metadata.on('warning', function () {
     t.pass('got warning because peer sent reject too much')
   })
 
