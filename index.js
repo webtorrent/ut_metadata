@@ -9,7 +9,6 @@ var BITFIELD_GROW = 1000
 var PIECE_LENGTH = 16 * 1024
 
 module.exports = function (metadata) {
-
   inherits(ut_metadata, EventEmitter)
 
   function ut_metadata (wire) {
