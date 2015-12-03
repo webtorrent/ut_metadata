@@ -37,7 +37,6 @@ module.exports = function (metadata) {
 
   ut_metadata.prototype.onHandshake = function (infoHash, peerId, extensions) {
     this._infoHash = infoHash
-    this._infoHashHex = infoHash.toString('hex')
   }
 
   ut_metadata.prototype.onExtendedHandshake = function (handshake) {
@@ -126,7 +125,7 @@ module.exports = function (metadata) {
     } catch (err) {}
 
     // check hash
-    if (this._infoHashHex && this._infoHashHex !== sha1.sync(metadata)) {
+    if (this._infoHash && this._infoHash !== sha1.sync(metadata)) {
       return false
     }
 
