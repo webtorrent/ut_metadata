@@ -19,7 +19,7 @@
   "devDependencies": {
     "bittorrent-protocol": "^1.0.0",
     "brfs": "^1.2.0",
-    "parse-torrent": "^4.0.0",
+    "parse-torrent": "^5.6.0",
     "tape": "^4.0.0"
   },
   "keywords": [
