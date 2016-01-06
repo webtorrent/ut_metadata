@@ -1,6 +1,6 @@
 # ut_metadata [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url]
 
-[travis-image]: https://img.shields.io/travis/feross/ut_metadata.svg?style=flat
+[travis-image]: https://img.shields.io/travis/feross/ut_metadata/master.svg?style=flat
 [travis-url]: https://travis-ci.org/feross/ut_metadata
 [npm-image]: https://img.shields.io/npm/v/ut_metadata.svg?style=flat
 [npm-url]: https://npmjs.org/package/ut_metadata
