@@ -1,15 +1,16 @@
+var bencode = require('bencode')
 var fs = require('fs')
 var parseTorrent = require('parse-torrent')
+var path = require('path')
 var Protocol = require('bittorrent-protocol')
-var ut_metadata = require('../')
-var bencode = require('bencode')
 var test = require('tape')
+var ut_metadata = require('../')
 
 // Used in multiple tests
-var metadata = fs.readFileSync(__dirname + '/torrents/leaves-magnet.torrent')
+var metadata = fs.readFileSync(path.join(__dirname, 'torrents/leaves-magnet.torrent'))
 var parsedTorrent = parseTorrent(metadata)
 
-var largeMetadata = fs.readFileSync(__dirname + '/torrents/ubuntu-12.04.4-alternate-amd64.iso.torrent')
+var largeMetadata = fs.readFileSync(path.join(__dirname, 'torrents/ubuntu-12.04.4-alternate-amd64.iso.torrent'))
 var largeParsedTorrent = parseTorrent(largeMetadata)
 
 var id1 = new Buffer('01234567890123456789')

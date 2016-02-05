@@ -1,11 +1,12 @@
-var fs = require('fs')
-var Protocol = require('bittorrent-protocol')
-var ut_metadata = require('../')
 var bencode = require('bencode')
+var fs = require('fs')
+var path = require('path')
+var Protocol = require('bittorrent-protocol')
 var test = require('tape')
+var ut_metadata = require('../')
 
 // Used in multiple tests
-var metadata = fs.readFileSync(__dirname + '/torrents/leaves-magnet.torrent')
+var metadata = fs.readFileSync(path.join(__dirname, 'torrents/leaves-magnet.torrent'))
 
 test('wire.use(ut_metadata())', function (t) {
   var wire = new Protocol()
