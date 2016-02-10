@@ -1,5 +1,6 @@
 var bencode = require('bencode')
 var BitField = require('bitfield')
+var debug = require('debug')('ut_metadata')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
 var sha1 = require('simple-sha1')
@@ -114,6 +115,7 @@ module.exports = function (metadata) {
 
   ut_metadata.prototype.setMetadata = function (metadata) {
     if (this._metadataComplete) return true
+    debug('set metadata')
 
     // if full torrent dictionary was passed in, pull out just `info` key
     try {
