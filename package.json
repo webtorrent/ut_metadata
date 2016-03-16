@@ -20,9 +20,9 @@
   "devDependencies": {
     "bittorrent-protocol": "^2.0.0",
     "brfs": "^1.2.0",
-    "parse-torrent": "^5.7.1",
     "standard": "^6.0.4",
     "tape": "^4.0.0",
+    "webtorrent-fixtures": "^1.3.0",
     "zuul": "^3.8.0"
   },
   "keywords": [

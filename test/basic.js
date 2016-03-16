@@ -1,12 +1,8 @@
 var bencode = require('bencode')
-var fs = require('fs')
-var path = require('path')
+var fixtures = require('webtorrent-fixtures')
 var Protocol = require('bittorrent-protocol')
 var test = require('tape')
 var ut_metadata = require('../')
-
-// Used in multiple tests
-var metadata = fs.readFileSync(path.join(__dirname, 'torrents/leaves-magnet.torrent'))
 
 test('wire.use(ut_metadata())', function (t) {
   var wire = new Protocol()
@@ -25,11 +21,11 @@ test('wire.use(ut_metadata(metadata))', function (t) {
   var wire = new Protocol()
   wire.pipe(wire)
 
-  wire.use(ut_metadata(metadata))
+  wire.use(ut_metadata(fixtures.leavesMetadata.torrent))
 
   t.ok(wire.ut_metadata)
   t.ok(wire.ut_metadata.fetch)
   t.ok(wire.ut_metadata.cancel)
-  t.equal(wire.ut_metadata.metadata.toString('hex'), bencode.encode(bencode.decode(metadata).info).toString('hex'))
+  t.equal(wire.ut_metadata.metadata.toString('hex'), bencode.encode(bencode.decode(fixtures.leavesMetadata.torrent).info).toString('hex'))
   t.end()
 })
