@@ -18,7 +18,7 @@
     "simple-sha1": "^2.0.0"
   },
   "devDependencies": {
-    "bittorrent-protocol": "^2.0.0",
+    "bittorrent-protocol": "^2.1.4",
     "brfs": "^1.2.0",
     "standard": "^6.0.4",
     "tape": "^4.0.0",
