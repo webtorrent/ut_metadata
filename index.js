@@ -10,9 +10,9 @@ var BITFIELD_GROW = 1000
 var PIECE_LENGTH = 16 * 1024
 
 module.exports = function (metadata) {
-  inherits(ut_metadata, EventEmitter)
+  inherits(utMetadata, EventEmitter)
 
-  function ut_metadata (wire) {
+  function utMetadata (wire) {
     EventEmitter.call(this)
 
     this._wire = wire
@@ -33,13 +33,13 @@ module.exports = function (metadata) {
   }
 
   // Name of the bittorrent-protocol extension
-  ut_metadata.prototype.name = 'ut_metadata'
+  utMetadata.prototype.name = 'ut_metadata'
 
-  ut_metadata.prototype.onHandshake = function (infoHash, peerId, extensions) {
+  utMetadata.prototype.onHandshake = function (infoHash, peerId, extensions) {
     this._infoHash = infoHash
   }
 
-  ut_metadata.prototype.onExtendedHandshake = function (handshake) {
+  utMetadata.prototype.onExtendedHandshake = function (handshake) {
     if (!handshake.m || !handshake.m.ut_metadata) {
       return this.emit('warning', new Error('Peer does not support ut_metadata'))
     }
@@ -60,7 +60,7 @@ module.exports = function (metadata) {
     }
   }
 
-  ut_metadata.prototype.onMessage = function (buf) {
+  utMetadata.prototype.onMessage = function (buf) {
     var dict, trailer
     try {
       var str = buf.toString()
@@ -95,7 +95,7 @@ module.exports = function (metadata) {
    * Ask the peer to send metadata.
    * @public
    */
-  ut_metadata.prototype.fetch = function () {
+  utMetadata.prototype.fetch = function () {
     if (this._metadataComplete) {
       return
     }
@@ -109,11 +109,11 @@ module.exports = function (metadata) {
    * Stop asking the peer to send metadata.
    * @public
    */
-  ut_metadata.prototype.cancel = function () {
+  utMetadata.prototype.cancel = function () {
     this._fetching = false
   }
 
-  ut_metadata.prototype.setMetadata = function (metadata) {
+  utMetadata.prototype.setMetadata = function (metadata) {
     if (this._metadataComplete) return true
     debug('set metadata')
 
@@ -142,7 +142,7 @@ module.exports = function (metadata) {
     return true
   }
 
-  ut_metadata.prototype._send = function (dict, trailer) {
+  utMetadata.prototype._send = function (dict, trailer) {
     var buf = bencode.encode(dict)
     if (Buffer.isBuffer(trailer)) {
       buf = Buffer.concat([buf, trailer])
@@ -150,11 +150,11 @@ module.exports = function (metadata) {
     this._wire.extended('ut_metadata', buf)
   }
 
-  ut_metadata.prototype._request = function (piece) {
+  utMetadata.prototype._request = function (piece) {
     this._send({ msg_type: 0, piece: piece })
   }
 
-  ut_metadata.prototype._data = function (piece, buf, totalSize) {
+  utMetadata.prototype._data = function (piece, buf, totalSize) {
     var msg = { msg_type: 1, piece: piece }
     if (typeof totalSize === 'number') {
       msg.total_size = totalSize
@@ -162,11 +162,11 @@ module.exports = function (metadata) {
     this._send(msg, buf)
   }
 
-  ut_metadata.prototype._reject = function (piece) {
+  utMetadata.prototype._reject = function (piece) {
     this._send({ msg_type: 2, piece: piece })
   }
 
-  ut_metadata.prototype._onRequest = function (piece) {
+  utMetadata.prototype._onRequest = function (piece) {
     if (!this._metadataComplete) {
       this._reject(piece)
       return
@@ -180,7 +180,7 @@ module.exports = function (metadata) {
     this._data(piece, buf, this._metadataSize)
   }
 
-  ut_metadata.prototype._onData = function (piece, buf, totalSize) {
+  utMetadata.prototype._onData = function (piece, buf, totalSize) {
     if (buf.length > PIECE_LENGTH) {
       return
     }
@@ -189,7 +189,7 @@ module.exports = function (metadata) {
     this._checkDone()
   }
 
-  ut_metadata.prototype._onReject = function (piece) {
+  utMetadata.prototype._onReject = function (piece) {
     if (this._remainingRejects > 0 && this._fetching) {
       // If we haven't been rejected too much, then try to request the piece again
       this._request(piece)
@@ -199,7 +199,7 @@ module.exports = function (metadata) {
     }
   }
 
-  ut_metadata.prototype._requestPieces = function () {
+  utMetadata.prototype._requestPieces = function () {
     this.metadata = new Buffer(this._metadataSize)
 
     for (var piece = 0; piece < this._numPieces; piece++) {
@@ -207,7 +207,7 @@ module.exports = function (metadata) {
     }
   }
 
-  ut_metadata.prototype._checkDone = function () {
+  utMetadata.prototype._checkDone = function () {
     var done = true
     for (var piece = 0; piece < this._numPieces; piece++) {
       if (!this._bitfield.get(piece)) {
@@ -225,7 +225,7 @@ module.exports = function (metadata) {
     }
   }
 
-  ut_metadata.prototype._failedMetadata = function () {
+  utMetadata.prototype._failedMetadata = function () {
     // reset bitfield & try again
     this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
     this._remainingRejects -= this._numPieces
@@ -236,5 +236,5 @@ module.exports = function (metadata) {
     }
   }
 
-  return ut_metadata
+  return utMetadata
 }
