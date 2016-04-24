@@ -2,7 +2,7 @@ var bencode = require('bencode')
 var fixtures = require('webtorrent-fixtures')
 var Protocol = require('bittorrent-protocol')
 var test = require('tape')
-var ut_metadata = require('../')
+var utMetadata = require('../')
 
 var id1 = new Buffer('01234567890123456789')
 var id2 = new Buffer('12345678901234567890')
@@ -14,8 +14,8 @@ test('fetch()', function (t) {
   var wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(ut_metadata(fixtures.leavesMetadata.torrent)) // wire1 already has metadata
-  wire2.use(ut_metadata()) // wire2 does not
+  wire1.use(utMetadata(fixtures.leavesMetadata.torrent)) // wire1 already has metadata
+  wire2.use(utMetadata()) // wire2 does not
 
   wire2.ut_metadata.fetch()
 
@@ -51,8 +51,8 @@ test('fetch() from peer without metadata', function (t) {
   var wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(ut_metadata()) // neither wire has metadata
-  wire2.use(ut_metadata())
+  wire1.use(utMetadata()) // neither wire has metadata
+  wire2.use(utMetadata())
 
   wire2.ut_metadata.fetch()
 
@@ -94,14 +94,14 @@ test('fetch when peer gets metadata later (setMetadata)', function (t) {
   var wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(ut_metadata()) // wire1 starts without metadata
+  wire1.use(utMetadata()) // wire1 starts without metadata
 
   process.nextTick(function () {
     wire1.ut_metadata.setMetadata(fixtures.leavesMetadata.torrent) // wire1 gets metadata later
 
     process.nextTick(function () {
       // wire2 does not start with metadata, but connects to wire1 after it gets metadata
-      wire2.use(ut_metadata())
+      wire2.use(utMetadata())
       wire2.ut_metadata.fetch()
 
       wire2.ut_metadata.on('metadata', function (_metadata) {
@@ -138,8 +138,8 @@ test('fetch() large torrent', function (t) {
   var wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(ut_metadata(fixtures.sintel.torrent)) // wire1 already has metadata
-  wire2.use(ut_metadata()) // wire2 does not
+  wire1.use(utMetadata(fixtures.sintel.torrent)) // wire1 already has metadata
+  wire2.use(utMetadata()) // wire2 does not
 
   wire2.ut_metadata.fetch()
 
@@ -180,8 +180,8 @@ test('discard invalid metadata', function (t) {
   var invalidMetadata = fixtures.leavesMetadata.torrent.slice(0)
   invalidMetadata[55] = 65 // mess up a byte in the info block
 
-  wire1.use(ut_metadata(invalidMetadata))
-  wire2.use(ut_metadata())
+  wire1.use(utMetadata(invalidMetadata))
+  wire2.use(utMetadata())
 
   wire2.ut_metadata.fetch()
 

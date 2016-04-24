@@ -2,13 +2,13 @@ var bencode = require('bencode')
 var fixtures = require('webtorrent-fixtures')
 var Protocol = require('bittorrent-protocol')
 var test = require('tape')
-var ut_metadata = require('../')
+var utMetadata = require('../')
 
-test('wire.use(ut_metadata())', function (t) {
+test('wire.use(utMetadata())', function (t) {
   var wire = new Protocol()
   wire.pipe(wire)
 
-  wire.use(ut_metadata())
+  wire.use(utMetadata())
 
   t.ok(wire.ut_metadata)
   t.ok(wire.ut_metadata.fetch)
@@ -17,11 +17,11 @@ test('wire.use(ut_metadata())', function (t) {
   t.end()
 })
 
-test('wire.use(ut_metadata(metadata))', function (t) {
+test('wire.use(utMetadata(metadata))', function (t) {
   var wire = new Protocol()
   wire.pipe(wire)
 
-  wire.use(ut_metadata(fixtures.leavesMetadata.torrent))
+  wire.use(utMetadata(fixtures.leavesMetadata.torrent))
 
   t.ok(wire.ut_metadata)
   t.ok(wire.ut_metadata.fetch)
