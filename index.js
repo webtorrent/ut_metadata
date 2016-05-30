@@ -1,5 +1,6 @@
 var bencode = require('bencode')
 var BitField = require('bitfield')
+var Buffer = require('safe-buffer').Buffer
 var debug = require('debug')('ut_metadata')
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')

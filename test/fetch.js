@@ -1,4 +1,5 @@
 var bencode = require('bencode')
+var Buffer = require('safe-buffer').Buffer
 var fixtures = require('webtorrent-fixtures')
 var Protocol = require('bittorrent-protocol')
 var test = require('tape')
