@@ -15,6 +15,7 @@
     "bitfield": "^1.0.1",
     "debug": "^2.2.0",
     "inherits": "^2.0.1",
+    "safe-buffer": "^5.0.1",
     "simple-sha1": "^2.0.0"
   },
   "devDependencies": {
