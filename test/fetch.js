@@ -4,8 +4,8 @@ var Protocol = require('bittorrent-protocol')
 var test = require('tape')
 var utMetadata = require('../')
 
-var id1 = new Buffer('01234567890123456789')
-var id2 = new Buffer('12345678901234567890')
+var id1 = Buffer.from('01234567890123456789')
+var id2 = Buffer.from('12345678901234567890')
 
 test('fetch()', function (t) {
   t.plan(3)

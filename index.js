@@ -46,9 +46,10 @@ module.exports = function (metadata) {
     if (!handshake.metadata_size) {
       return this.emit('warning', new Error('Peer does not have metadata'))
     }
-
-    if (handshake.metadata_size > MAX_METADATA_SIZE) {
-      return this.emit('warning', new Error('Peer gave maliciously large metadata size'))
+    if (typeof handshake.metadata_size !== 'number' ||
+        MAX_METADATA_SIZE < handshake.metadata_size ||
+        handshake.metadata_size <= 0) {
+      return this.emit('warning', new Error('Peer gave invalid metadata size'))
     }
 
     this._metadataSize = handshake.metadata_size
@@ -200,8 +201,7 @@ module.exports = function (metadata) {
   }
 
   utMetadata.prototype._requestPieces = function () {
-    this.metadata = new Buffer(this._metadataSize)
-
+    this.metadata = Buffer.alloc(this._metadataSize)
     for (var piece = 0; piece < this._numPieces; piece++) {
       this._request(piece)
     }
