@@ -8,7 +8,7 @@
     "url": "http://feross.org/"
   },
   "bugs": {
-    "url": "https://github.com/feross/ut_metadata/issues"
+    "url": "https://github.com/webtorrent/ut_metadata/issues"
   },
   "dependencies": {
     "bencode": "^0.11.0",
@@ -42,7 +42,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/ut_metadata.git"
+    "url": "git://github.com/webtorrent/ut_metadata.git"
   },
   "scripts": {
     "test": "standard && npm run test-node && npm run test-browser",

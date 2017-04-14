@@ -1,7 +1,7 @@
 # ut_metadata [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
 
-[travis-image]: https://img.shields.io/travis/feross/ut_metadata/master.svg
-[travis-url]: https://travis-ci.org/feross/ut_metadata
+[travis-image]: https://img.shields.io/travis/webtorrent/ut_metadata/master.svg
+[travis-url]: https://travis-ci.org/webtorrent/ut_metadata
 [npm-image]: https://img.shields.io/npm/v/ut_metadata.svg
 [npm-url]: https://npmjs.org/package/ut_metadata
 [downloads-image]: https://img.shields.io/npm/dm/ut_metadata.svg
@@ -13,7 +13,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/ut_metadata.svg)](https://saucelabs.com/u/ut_metadata)
 
-Node.js implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html). Use with [bittorrent-protocol](https://github.com/feross/bittorrent-protocol).
+Node.js implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html). Use with [bittorrent-protocol](https://www.npmjs.com/package/bittorrent-protocol).
 
 The purpose of this extension is to allow clients to join a swarm and complete a download without the need of downloading a .torrent file first. This extension instead allows clients to download the metadata from peers. It makes it possible to support magnet links, a link on a web page only containing enough information to join the swarm (the info hash).
 
@@ -27,7 +27,7 @@ npm install ut_metadata
 
 ### usage
 
-This package should be used with [bittorrent-protocol](https://github.com/feross/bittorrent-protocol), which supports a plugin-like system for extending the protocol with additional functionality.
+This package should be used with [bittorrent-protocol](https://www.npmjs.com/package/bittorrent-protocol), which supports a plugin-like system for extending the protocol with additional functionality.
 
 Say you're already using `bittorrent-protocol`. Your code might look something like this:
 
