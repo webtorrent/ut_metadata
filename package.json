@@ -3,9 +3,9 @@
   "description": "Extension for Peers to Send Metadata Files (BEP 9)",
   "version": "3.0.9",
   "author": {
-    "name": "Feross Aboukhadijeh",
-    "email": "feross@feross.org",
-    "url": "http://feross.org/"
+    "name": "WebTorrent, LLC",
+    "email": "feross@webtorrent.io",
+    "url": "https://webtorrent.io"
   },
   "bugs": {
     "url": "https://github.com/webtorrent/ut_metadata/issues"
@@ -27,7 +27,6 @@
     "zuul": "^3.8.0"
   },
   "keywords": [
-    "9",
     "Extension for Peers to Send Metadata Files",
     "bep",
     "bep 9",
