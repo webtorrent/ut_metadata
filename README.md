@@ -145,4 +145,4 @@ wire.ut_metadata.on('warning', function (err) {
 
 ### license
 
-MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org) and [WebTorrent, LLC](https://webtorrent.io/).
+MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org) and [WebTorrent, LLC](https://webtorrent.io).
