@@ -11,8 +11,6 @@
 
 ### BitTorrent Extension for Peers to Send Metadata Files (BEP 9)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/ut_metadata.svg)](https://saucelabs.com/u/ut_metadata)
-
 JavaScript implementation of the [Extension for Peers to Send Metadata Files (BEP 9)](http://www.bittorrent.org/beps/bep_0009.html). Use with [bittorrent-protocol](https://www.npmjs.com/package/bittorrent-protocol).
 
 The purpose of this extension is to allow clients to join a swarm and complete a download without the need of downloading a .torrent file first. This extension instead allows clients to download the metadata from peers. It makes it possible to support magnet links, a link on a web page only containing enough information to join the swarm (the info hash).

@@ -19,7 +19,6 @@
     "simple-sha1": "^2.0.0"
   },
   "devDependencies": {
-    "airtap": "0.1.0",
     "bittorrent-protocol": "^3.0.0",
     "brfs": "^2.0.0",
     "standard": "*",
@@ -44,9 +43,6 @@
     "url": "git://github.com/webtorrent/ut_metadata.git"
   },
   "scripts": {
-    "test": "standard && npm run test-node && npm run test-browser",
-    "test-browser": "airtap -- test/*.js",
-    "test-browser-local": "airtap --local -- test/*.js",
-    "test-node": "tape test/*.js"
+    "test": "standard && tape test/*.js"
   }
 }
