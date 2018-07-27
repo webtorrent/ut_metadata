@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "airtap": "0.1.0",
-    "bittorrent-protocol": "^2.0.0",
+    "bittorrent-protocol": "^3.0.0",
     "brfs": "^2.0.0",
     "standard": "*",
     "tape": "^4.0.0",
