@@ -19,9 +19,9 @@
     "simple-sha1": "^2.0.0"
   },
   "devDependencies": {
-    "airtap": "0.0.7",
+    "airtap": "0.1.0",
     "bittorrent-protocol": "^3.0.0",
-    "brfs": "^1.2.0",
+    "brfs": "^2.0.0",
     "standard": "*",
     "tape": "^4.0.0",
     "webtorrent-fixtures": "^1.3.0"
