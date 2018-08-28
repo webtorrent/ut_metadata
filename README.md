@@ -30,15 +30,15 @@ This package should be used with [bittorrent-protocol](https://www.npmjs.com/pac
 Say you're already using `bittorrent-protocol`. Your code might look something like this:
 
 ```js
-var Protocol = require('bittorrent-protocol')
-var net = require('net')
+const Protocol = require('bittorrent-protocol')
+const net = require('net')
 
-net.createServer(function (socket) {
+net.createServer(socket => {
   var wire = new Protocol()
   socket.pipe(wire).pipe(socket)
 
   // handle handshake
-  wire.on('handshake', function (infoHash, peerId) {
+  wire.on('handshake', (infoHash, peerId) => {
     wire.handshake(new Buffer('my info hash'), new Buffer('my peer id'))
   })
 
@@ -48,12 +48,12 @@ net.createServer(function (socket) {
 To add support for BEP 9, simply modify your code like this:
 
 ```js
-var Protocol = require('bittorrent-protocol')
-var net = require('net')
-var ut_metadata = require('ut_metadata')
+const Protocol = require('bittorrent-protocol')
+const net = require('net')
+const ut_metadata = require('ut_metadata')
 
-net.createServer(function (socket) {
-  var wire = new Protocol()
+net.createServer(socket => {
+  const wire = new Protocol()
   socket.pipe(wire).pipe(socket)
 
   // initialize the extension
@@ -65,7 +65,7 @@ net.createServer(function (socket) {
   wire.ut_metadata.fetch()
 
   // 'metadata' event will fire when the metadata arrives and is verified to be correct!
-  wire.ut_metadata.on('metadata', function (metadata) {
+  wire.ut_metadata.on('metadata', metadata => {
     // got metadata!
 
     // Note: the event will not fire if the peer does not support ut_metadata, if they
@@ -75,12 +75,12 @@ net.createServer(function (socket) {
 
   // optionally, listen to the 'warning' event if you want to know that metadata is
   // probably not going to arrive for one of the above reasons.
-  wire.ut_metadata.on('warning', function (err) {
+  wire.ut_metadata.on('warning', err => {
     console.log(err.message)
   })
 
   // handle handshake
-  wire.on('handshake', function (infoHash, peerId) {
+  wire.on('handshake', (infoHash, peerId) => {
     wire.handshake(new Buffer('my info hash'), new Buffer('my peer id'))
   })
 
@@ -95,7 +95,7 @@ Initialize the extension. If you have the torrent metadata (Buffer), pass it int
 `ut_metadata` constructor so it's made available to the peer.
 
 ```js
-var metadata = fs.readFileSync(__dirname + '/file.torrent')
+const metadata = fs.readFileSync(__dirname + '/file.torrent')
 wire.use(ut_metadata(metadata))
 ```
 
@@ -119,7 +119,7 @@ Fired when metadata is available and verified to be correct. Called with a singl
 parameter of type Buffer.
 
 ```js
-wire.ut_metadata.on('metadata', function (metadata) {
+wire.ut_metadata.on('metadata', metadata => {
   console.log(Buffer.isBuffer(metadata)) // true
 })
 ```
@@ -136,7 +136,7 @@ Fired if:
  - the peer repeatedly sent invalid data
 
 ```js
-wire.ut_metadata.on('warning', function (err) {
+wire.ut_metadata.on('warning', err => {
   console.log(err.message)
 })
 ```
