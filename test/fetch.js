@@ -1,34 +1,39 @@
-var bencode = require('bencode')
-var fixtures = require('webtorrent-fixtures')
-var Protocol = require('bittorrent-protocol')
-var test = require('tape')
-var utMetadata = require('../')
+const { leavesMetadata, sintel } = require('webtorrent-fixtures')
+const bencode = require('bencode')
+const Protocol = require('bittorrent-protocol')
+const test = require('tape')
+const utMetadata = require('../')
 
-var id1 = Buffer.from('01234567890123456789')
-var id2 = Buffer.from('12345678901234567890')
+const id1 = Buffer.from('01234567890123456789')
+const id2 = Buffer.from('12345678901234567890')
 
-test('fetch()', function (t) {
+test('fetch()', t => {
   t.plan(3)
 
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(utMetadata(fixtures.leavesMetadata.torrent)) // wire1 already has metadata
+  wire1.use(utMetadata(leavesMetadata.torrent)) // wire1 already has metadata
   wire2.use(utMetadata()) // wire2 does not
 
   wire2.ut_metadata.fetch()
 
-  wire2.ut_metadata.on('metadata', function (_metadata) {
+  wire2.ut_metadata.on('metadata', _metadata => {
     // got metadata!
-    t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(fixtures.leavesMetadata.torrent).info }).toString('hex'))
+    t.equal(
+      _metadata.toString('hex'),
+      bencode.encode({
+        info: bencode.decode(leavesMetadata.torrent).info
+      }).toString('hex')
+    )
   })
 
-  wire2.on('handshake', function (infoHash, peerId, extensions) {
-    wire2.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id2)
+  wire2.on('handshake', (infoHash, peerId, extensions) => {
+    wire2.handshake(leavesMetadata.parsedTorrent.infoHash, id2)
   })
 
-  wire2.on('extended', function (ext) {
+  wire2.on('extended', ext => {
     if (ext === 'handshake') {
       t.pass('got extended handshake')
     } else if (ext === 'ut_metadata') {
@@ -41,14 +46,14 @@ test('fetch()', function (t) {
     }
   })
 
-  wire1.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id1)
+  wire1.handshake(leavesMetadata.parsedTorrent.infoHash, id1)
 })
 
-test('fetch() from peer without metadata', function (t) {
+test('fetch() from peer without metadata', t => {
   t.plan(2)
 
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
   wire1.use(utMetadata()) // neither wire has metadata
@@ -56,25 +61,25 @@ test('fetch() from peer without metadata', function (t) {
 
   wire2.ut_metadata.fetch()
 
-  wire2.ut_metadata.on('metadata', function () {
+  wire2.ut_metadata.on('metadata', () => {
     t.fail('No "metadata" event should fire')
   })
 
-  wire1.ut_metadata.onMessage = function () {
+  wire1.ut_metadata.onMessage = () => {
     t.fail('No messages should be sent to wire1')
-    // No messages should be sent because wire1 never sent metadata_size in the
-    // extended handshake, so he doesn't have metadata
+    // No messages should be sent because wire1 never sent metadata_size
+    // in the extended handshake, so he doesn't have metadata
   }
 
-  wire2.ut_metadata.on('warning', function () {
+  wire2.ut_metadata.on('warning', () => {
     t.pass('got warning about peer missing metadata')
   })
 
-  wire2.on('handshake', function (infoHash, peerId, extensions) {
-    wire2.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id2)
+  wire2.on('handshake', (infoHash, peerId, extensions) => {
+    wire2.handshake(leavesMetadata.parsedTorrent.infoHash, id2)
   })
 
-  wire2.on('extended', function (ext) {
+  wire2.on('extended', ext => {
     if (ext === 'handshake') {
       t.pass('got extended handshake')
     } else if (ext === 'ut_metadata') {
@@ -84,36 +89,44 @@ test('fetch() from peer without metadata', function (t) {
     }
   })
 
-  wire1.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id1)
+  wire1.handshake(leavesMetadata.parsedTorrent.infoHash, id1)
 })
 
-test('fetch when peer gets metadata later (setMetadata)', function (t) {
+test('fetch when peer gets metadata later (setMetadata)', t => {
   t.plan(3)
 
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
+
   wire1.pipe(wire2).pipe(wire1)
 
   wire1.use(utMetadata()) // wire1 starts without metadata
 
-  process.nextTick(function () {
-    wire1.ut_metadata.setMetadata(fixtures.leavesMetadata.torrent) // wire1 gets metadata later
+  process.nextTick(() => {
+    // wire1 gets metadata later
+    wire1.ut_metadata.setMetadata(leavesMetadata.torrent)
 
-    process.nextTick(function () {
-      // wire2 does not start with metadata, but connects to wire1 after it gets metadata
+    process.nextTick(() => {
+      // wire2 does not start with metadata,
+      // but connects to wire1 after it gets metadata
       wire2.use(utMetadata())
       wire2.ut_metadata.fetch()
 
-      wire2.ut_metadata.on('metadata', function (_metadata) {
+      wire2.ut_metadata.on('metadata', _metadata => {
         // got metadata!
-        t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(fixtures.leavesMetadata.torrent).info }).toString('hex'))
+        t.equal(
+          _metadata.toString('hex'),
+          bencode.encode({
+            info: bencode.decode(leavesMetadata.torrent).info
+          }).toString('hex')
+        )
       })
 
-      wire2.on('handshake', function (infoHash, peerId, extensions) {
-        wire2.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id2)
+      wire2.on('handshake', (infoHash, peerId, extensions) => {
+        wire2.handshake(leavesMetadata.parsedTorrent.infoHash, id2)
       })
 
-      wire2.on('extended', function (ext) {
+      wire2.on('extended', ext => {
         if (ext === 'handshake') {
           t.pass('got extended handshake')
         } else if (ext === 'ut_metadata') {
@@ -126,37 +139,43 @@ test('fetch when peer gets metadata later (setMetadata)', function (t) {
         }
       })
 
-      wire1.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id1)
+      wire1.handshake(leavesMetadata.parsedTorrent.infoHash, id1)
     })
   })
 })
 
-test('fetch() large torrent', function (t) {
+test('fetch() large torrent', t => {
   t.plan(4)
 
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  wire1.use(utMetadata(fixtures.sintel.torrent)) // wire1 already has metadata
+  wire1.use(utMetadata(sintel.torrent)) // wire1 already has metadata
   wire2.use(utMetadata()) // wire2 does not
 
   wire2.ut_metadata.fetch()
 
-  wire2.ut_metadata.on('metadata', function (_metadata) {
+  wire2.ut_metadata.on('metadata', _metadata => {
     // got metadata!
-    t.equal(_metadata.toString('hex'), bencode.encode({ info: bencode.decode(fixtures.sintel.torrent).info }).toString('hex'))
+    t.equal(
+      _metadata.toString('hex'),
+      bencode.encode({
+        info: bencode.decode(sintel.torrent).info
+      }).toString('hex')
+    )
   })
 
-  wire2.on('handshake', function (infoHash, peerId, extensions) {
-    wire2.handshake(fixtures.sintel.parsedTorrent.infoHash, id2)
+  wire2.on('handshake', (infoHash, peerId, extensions) => {
+    wire2.handshake(sintel.parsedTorrent.infoHash, id2)
   })
 
-  wire2.on('extended', function (ext) {
+  wire2.on('extended', ext => {
     if (ext === 'handshake') {
       t.pass('got extended handshake')
     } else if (ext === 'ut_metadata') {
-      // note: this should get called twice, once for each block of the sintel metadata
+      // note: this should get called twice,
+      // once for each block of the sintel metadata
       t.pass('got extended ut_metadata message')
 
       // this is emitted for consistency's sake, but it's ignored
@@ -167,17 +186,17 @@ test('fetch() large torrent', function (t) {
     }
   })
 
-  wire1.handshake(fixtures.sintel.parsedTorrent.infoHash, id1)
+  wire1.handshake(sintel.parsedTorrent.infoHash, id1)
 })
 
-test('discard invalid metadata', function (t) {
+test('discard invalid metadata', t => {
   t.plan(1)
 
-  var wire1 = new Protocol()
-  var wire2 = new Protocol()
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
   wire1.pipe(wire2).pipe(wire1)
 
-  var invalidMetadata = fixtures.leavesMetadata.torrent.slice(0)
+  const invalidMetadata = leavesMetadata.torrent.slice(0)
   invalidMetadata[55] = 65 // mess up a byte in the info block
 
   wire1.use(utMetadata(invalidMetadata))
@@ -185,17 +204,17 @@ test('discard invalid metadata', function (t) {
 
   wire2.ut_metadata.fetch()
 
-  wire2.ut_metadata.on('metadata', function () {
+  wire2.ut_metadata.on('metadata', () => {
     t.fail('No "metadata" event should fire')
   })
 
-  wire2.ut_metadata.on('warning', function () {
+  wire2.ut_metadata.on('warning', () => {
     t.pass('got warning because peer sent reject too much')
   })
 
-  wire2.on('handshake', function (infoHash, peerId, extensions) {
-    wire2.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id2)
+  wire2.on('handshake', (infoHash, peerId, extensions) => {
+    wire2.handshake(leavesMetadata.parsedTorrent.infoHash, id2)
   })
 
-  wire1.handshake(fixtures.leavesMetadata.parsedTorrent.infoHash, id1)
+  wire1.handshake(leavesMetadata.parsedTorrent.infoHash, id1)
 })

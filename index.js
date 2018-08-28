@@ -4,9 +4,9 @@ const BitField = require('bitfield')
 const debug = require('debug')('ut_metadata')
 const sha1 = require('simple-sha1')
 
-const MAX_METADATA_SIZE = 10000000 // 10MB
-const BITFIELD_GROW = 1000
-const PIECE_LENGTH = 16 * 1024
+const MAX_METADATA_SIZE = 1E7 // 10 MB
+const BITFIELD_GROW = 1E3
+const PIECE_LENGTH = 1 << 14 // 16 KiB
 
 module.exports = metadata => {
   class utMetadata extends EventEmitter {
@@ -15,14 +15,15 @@ module.exports = metadata => {
 
       this._wire = wire
 
+      this._fetching = false
       this._metadataComplete = false
       this._metadataSize = null
-      this._remainingRejects = null // how many reject messages to tolerate before quitting
-      this._fetching = false
+      // how many reject messages to tolerate before quitting
+      this._remainingRejects = null
 
-      // The largest .torrent file that I know of is ~1-2MB, which is ~100 pieces.
-      // Therefore, cap the bitfield to 10x that (1000 pieces) so a malicious peer can't
-      // make it grow to fill all memory.
+      // The largest torrent file that I know of is ~1-2MB, which is ~100
+      // pieces. Therefore, cap the bitfield to 10x that (1000 pieces) so a
+      // malicious peer can't make it grow to fill all memory.
       this._bitfield = new BitField(0, { grow: BITFIELD_GROW })
 
       if (Buffer.isBuffer(metadata)) {
@@ -134,7 +135,9 @@ module.exports = metadata => {
       this._metadataSize = this.metadata.length
       this._wire.extendedHandshake.metadata_size = this._metadataSize
 
-      this.emit('metadata', bencode.encode({ info: bencode.decode(this.metadata) }))
+      this.emit('metadata', bencode.encode({
+        info: bencode.decode(this.metadata)
+      }))
 
       return true
     }
@@ -188,7 +191,8 @@ module.exports = metadata => {
 
     _onReject (piece) {
       if (this._remainingRejects > 0 && this._fetching) {
-        // If we haven't been rejected too much, then try to request the piece again
+        // If we haven't been rejected too much,
+        // then try to request the piece again
         this._request(piece)
         this._remainingRejects -= 1
       } else {
