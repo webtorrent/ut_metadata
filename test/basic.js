@@ -1,11 +1,11 @@
-var bencode = require('bencode')
-var fixtures = require('webtorrent-fixtures')
-var Protocol = require('bittorrent-protocol')
-var test = require('tape')
-var utMetadata = require('../')
+const { leavesMetadata } = require('webtorrent-fixtures')
+const bencode = require('bencode')
+const Protocol = require('bittorrent-protocol')
+const test = require('tape')
+const utMetadata = require('../')
 
-test('wire.use(utMetadata())', function (t) {
-  var wire = new Protocol()
+test('wire.use(utMetadata())', t => {
+  const wire = new Protocol()
   wire.pipe(wire)
 
   wire.use(utMetadata())
@@ -17,15 +17,18 @@ test('wire.use(utMetadata())', function (t) {
   t.end()
 })
 
-test('wire.use(utMetadata(metadata))', function (t) {
-  var wire = new Protocol()
+test('wire.use(utMetadata(metadata))', t => {
+  const wire = new Protocol()
   wire.pipe(wire)
 
-  wire.use(utMetadata(fixtures.leavesMetadata.torrent))
+  wire.use(utMetadata(leavesMetadata.torrent))
 
   t.ok(wire.ut_metadata)
   t.ok(wire.ut_metadata.fetch)
   t.ok(wire.ut_metadata.cancel)
-  t.equal(wire.ut_metadata.metadata.toString('hex'), bencode.encode(bencode.decode(fixtures.leavesMetadata.torrent).info).toString('hex'))
+  t.equal(
+    wire.ut_metadata.metadata.toString('hex'),
+    bencode.encode(bencode.decode(leavesMetadata.torrent).info).toString('hex')
+  )
   t.end()
 })
