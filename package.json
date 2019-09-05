@@ -14,7 +14,7 @@
     "bencode": "^2.0.0",
     "bitfield": "^3.0.0",
     "debug": "^4.0.0",
-    "simple-sha1": "^2.0.0"
+    "simple-sha1": "^3.0.0"
   },
   "devDependencies": {
     "bittorrent-protocol": "^3.0.0",
