@@ -52,9 +52,7 @@ module.exports = metadata => {
       this._numPieces = Math.ceil(this._metadataSize / PIECE_LENGTH)
       this._remainingRejects = this._numPieces * 2
 
-      if (this._fetching) {
-        this._requestPieces()
-      }
+      this._requestPieces()
     }
 
     onMessage (buf) {
@@ -181,7 +179,7 @@ module.exports = metadata => {
     }
 
     _onData (piece, buf, totalSize) {
-      if (buf.length > PIECE_LENGTH) {
+      if (buf.length > PIECE_LENGTH || !this._fetching) {
         return
       }
       buf.copy(this.metadata, piece * PIECE_LENGTH)
@@ -201,6 +199,7 @@ module.exports = metadata => {
     }
 
     _requestPieces () {
+      if (!this._fetching) return
       this.metadata = Buffer.alloc(this._metadataSize)
       for (let piece = 0; piece < this._numPieces; piece++) {
         this._request(piece)

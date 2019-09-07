@@ -218,3 +218,34 @@ test('discard invalid metadata', t => {
 
   wire1.handshake(leavesMetadata.parsedTorrent.infoHash, id1)
 })
+
+test('stop receiving data after cancel', t => {
+  t.plan(1)
+
+  const wire1 = new Protocol()
+  const wire2 = new Protocol()
+
+  wire1.pipe(wire2).pipe(wire1)
+
+  wire1.use(utMetadata(sintel.torrent))
+  wire2.use(utMetadata())
+
+  wire2.ut_metadata.once('metadata', () => {
+    t.fail('No "metadata" event should fire')
+  })
+
+  wire2.once('handshake', (infoHash, peerId, extensions) => {
+    wire2.handshake(sintel.parsedTorrent.infoHash, id2)
+    wire2.ut_metadata.fetch()
+  })
+
+  wire2.on('extended', ext => {
+    if (ext === 'ut_metadata') {
+      wire2.ut_metadata.cancel()
+    }
+  })
+
+  wire1.handshake(sintel.parsedTorrent.infoHash, id1)
+
+  process.nextTick(() => t.pass('no metadata received'))
+})
