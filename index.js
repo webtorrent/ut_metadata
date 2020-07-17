@@ -1,3 +1,4 @@
+/*! ut_metadata. MIT License. WebTorrent LLC <https://webtorrent.io/opensource> */
 const { EventEmitter } = require('events')
 const bencode = require('bencode')
 const BitField = require('bitfield')

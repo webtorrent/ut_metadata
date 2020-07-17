@@ -3,7 +3,7 @@
   "description": "Extension for Peers to Send Metadata Files (BEP 9)",
   "version": "3.5.1",
   "author": {
-    "name": "WebTorrent, LLC",
+    "name": "WebTorrent LLC",
     "email": "feross@webtorrent.io",
     "url": "https://webtorrent.io"
   },
@@ -42,5 +42,19 @@
   },
   "scripts": {
     "test": "standard && tape test/*.js"
-  }
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/feross"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/feross"
+    },
+    {
+      "type": "consulting",
+      "url": "https://feross.org/support"
+    }
+  ]
 }
