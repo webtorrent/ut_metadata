@@ -1,7 +1,7 @@
 /*! ut_metadata. MIT License. WebTorrent LLC <https://webtorrent.io/opensource> */
 const { EventEmitter } = require('events')
 const bencode = require('bencode')
-const BitField = require('bitfield')
+const BitField = require('bitfield').default
 const debug = require('debug')('ut_metadata')
 const sha1 = require('simple-sha1')
 
