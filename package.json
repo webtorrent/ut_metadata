@@ -13,11 +13,11 @@
   "dependencies": {
     "bencode": "^2.0.1",
     "bitfield": "^3.0.0",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "simple-sha1": "^3.0.1"
   },
   "devDependencies": {
-    "bittorrent-protocol": "^3.1.1",
+    "bittorrent-protocol": "^3.1.2",
     "brfs": "^2.0.2",
     "standard": "*",
     "tape": "^5.0.1",
