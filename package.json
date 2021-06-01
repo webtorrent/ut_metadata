@@ -17,11 +17,11 @@
     "simple-sha1": "^3.0.1"
   },
   "devDependencies": {
-    "bittorrent-protocol": "^3.1.2",
-    "brfs": "^2.0.2",
+    "bittorrent-protocol": "3.3.1",
+    "brfs": "2.0.2",
     "standard": "*",
-    "tape": "^5.0.1",
-    "webtorrent-fixtures": "^1.7.3"
+    "tape": "5.2.2",
+    "webtorrent-fixtures": "1.7.3"
   },
   "keywords": [
     "Extension for Peers to Send Metadata Files",
