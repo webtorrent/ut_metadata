@@ -1,7 +1,7 @@
-# ut_metadata [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
+# ut_metadata [![ci][ci-image]][ci-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
 
-[travis-image]: https://img.shields.io/travis/webtorrent/ut_metadata/master.svg
-[travis-url]: https://travis-ci.org/webtorrent/ut_metadata
+[ci-image]: https://github.com/webtorrent/ut_metadata/actions/workflows/ci.yml/badge.svg?branch=master
+[ci-url]: https://github.com/webtorrent/ut_metadata/actions/workflows/ci.yml
 [npm-image]: https://img.shields.io/npm/v/ut_metadata.svg
 [npm-url]: https://npmjs.org/package/ut_metadata
 [downloads-image]: https://img.shields.io/npm/dm/ut_metadata.svg
