@@ -17,7 +17,7 @@
     "simple-sha1": "^3.0.1"
   },
   "devDependencies": {
-    "@webtorrent/semantic-release-config": "1.0.5",
+    "@webtorrent/semantic-release-config": "1.0.7",
     "bittorrent-protocol": "3.4.3",
     "brfs": "2.0.2",
     "semantic-release": "17.4.5",
