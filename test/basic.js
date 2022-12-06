@@ -1,8 +1,10 @@
-const { leavesMetadata } = require('webtorrent-fixtures')
-const bencode = require('bencode')
-const Protocol = require('bittorrent-protocol')
-const test = require('tape')
-const utMetadata = require('../')
+import fixtures from 'webtorrent-fixtures'
+import bencode from 'bencode'
+import Protocol from 'bittorrent-protocol'
+import test from 'tape'
+import utMetadata from '../index.js'
+
+const { leavesMetadata } = fixtures
 
 test('wire.use(utMetadata())', t => {
   const wire = new Protocol()

@@ -10,6 +10,7 @@
   "bugs": {
     "url": "https://github.com/webtorrent/ut_metadata/issues"
   },
+  "type": "module",
   "dependencies": {
     "bencode": "^2.0.1",
     "bitfield": "^4.0.0",
@@ -37,7 +38,12 @@
     "ut_metadata"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "engines": {
+    "node": ">=12.20.0"
+  },
+  "exports": {
+    "import": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/webtorrent/ut_metadata.git"

@@ -1,8 +1,10 @@
-const { leavesMetadata, sintel } = require('webtorrent-fixtures')
-const bencode = require('bencode')
-const Protocol = require('bittorrent-protocol')
-const test = require('tape')
-const utMetadata = require('../')
+import fixtures from 'webtorrent-fixtures'
+import bencode from 'bencode'
+import Protocol from 'bittorrent-protocol'
+import test from 'tape'
+import utMetadata from '../index.js'
+
+const { leavesMetadata, sintel } = fixtures
 
 const id1 = Buffer.from('01234567890123456789')
 const id2 = Buffer.from('12345678901234567890')
