@@ -1,15 +1,17 @@
 /*! ut_metadata. MIT License. WebTorrent LLC <https://webtorrent.io/opensource> */
-const { EventEmitter } = require('events')
-const bencode = require('bencode')
-const BitField = require('bitfield').default
-const debug = require('debug')('ut_metadata')
-const sha1 = require('simple-sha1')
+import { EventEmitter } from 'events'
+import bencode from 'bencode'
+import BitField from 'bitfield'
+import Debug from 'debug'
+import sha1 from 'simple-sha1'
+
+const debug = Debug('ut_metadata')
 
 const MAX_METADATA_SIZE = 1E7 // 10 MB
 const BITFIELD_GROW = 1E3
 const PIECE_LENGTH = 1 << 14 // 16 KiB
 
-module.exports = metadata => {
+export default metadata => {
   class utMetadata extends EventEmitter {
     constructor (wire) {
       super()
