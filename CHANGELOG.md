@@ -1,3 +1,15 @@
+## [4.0.2](https://github.com/webtorrent/ut_metadata/compare/v4.0.1...v4.0.2) (2022-12-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bittorrent-protocol to v4.1.0 ([#85](https://github.com/webtorrent/ut_metadata/issues/85)) ([dcefd4e](https://github.com/webtorrent/ut_metadata/commit/dcefd4eb691324499743d418bf284e5b4c611d37))
+
+
+### Performance Improvements
+
+* drop rusha, buffer ([#79](https://github.com/webtorrent/ut_metadata/issues/79)) [skip ci] ([92ab67a](https://github.com/webtorrent/ut_metadata/commit/92ab67a715065716710aad59e3a9525589d1a426))
+
 ## [4.0.1](https://github.com/webtorrent/ut_metadata/compare/v4.0.0...v4.0.1) (2022-12-06)
 
 
