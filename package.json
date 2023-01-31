@@ -21,7 +21,7 @@
     "@webtorrent/semantic-release-config": "1.0.8",
     "bittorrent-protocol": "4.1.4",
     "brfs": "2.0.2",
-    "semantic-release": "19.0.5",
+    "semantic-release": "20.1.0",
     "standard": "*",
     "tape": "5.6.3",
     "webtorrent-fixtures": "1.7.5"
