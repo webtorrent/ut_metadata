@@ -19,12 +19,12 @@
   },
   "devDependencies": {
     "@webtorrent/semantic-release-config": "1.0.8",
-    "bittorrent-protocol": "4.1.4",
+    "bittorrent-protocol": "4.1.6",
     "brfs": "2.0.2",
     "semantic-release": "20.1.0",
     "standard": "*",
     "tape": "5.6.3",
-    "webtorrent-fixtures": "2.0.0"
+    "webtorrent-fixtures": "2.0.2"
   },
   "keywords": [
     "Extension for Peers to Send Metadata Files",
