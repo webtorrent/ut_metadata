@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/webtorrent/ut_metadata/compare/v4.0.2...v4.0.3) (2023-08-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bencode to v4 ([#103](https://github.com/webtorrent/ut_metadata/issues/103)) ([a5ddef3](https://github.com/webtorrent/ut_metadata/commit/a5ddef33b3147bbb2d27ab9c9d51aba93828bfc3))
+
 ## [4.0.2](https://github.com/webtorrent/ut_metadata/compare/v4.0.1...v4.0.2) (2022-12-18)
 
 
