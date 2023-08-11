@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@webtorrent/semantic-release-config": "1.0.10",
-    "bittorrent-protocol": "4.1.8",
+    "bittorrent-protocol": "4.1.11",
     "brfs": "2.0.2",
     "semantic-release": "21.0.7",
     "standard": "*",
