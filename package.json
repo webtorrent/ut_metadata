@@ -23,7 +23,7 @@
     "brfs": "2.0.2",
     "semantic-release": "21.1.2",
     "standard": "*",
-    "tape": "5.7.4",
+    "tape": "5.7.5",
     "webtorrent-fixtures": "2.0.2"
   },
   "keywords": [
