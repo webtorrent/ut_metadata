@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/webtorrent/ut_metadata/compare/v4.0.3...v5.0.0) (2026-04-14)
+
+
+### Features
+
+* Update Node.js engine requirement to version 22 ([#146](https://github.com/webtorrent/ut_metadata/issues/146)) ([1d90e41](https://github.com/webtorrent/ut_metadata/commit/1d90e4190c0a1fcf7254e9c7c9e435ace1b29766))
+
+
+### BREAKING CHANGES
+
+* requires node 22
+
 ## [4.0.3](https://github.com/webtorrent/ut_metadata/compare/v4.0.2...v4.0.3) (2023-08-10)
 
 
