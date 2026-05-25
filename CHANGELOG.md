@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/webtorrent/ut_metadata/compare/v5.0.0...v5.0.1) (2026-05-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bitfield to v5 ([#143](https://github.com/webtorrent/ut_metadata/issues/143)) ([26f5724](https://github.com/webtorrent/ut_metadata/commit/26f572468fead4aeeccebc83d528aac5530679db))
+
 # [5.0.0](https://github.com/webtorrent/ut_metadata/compare/v4.0.3...v5.0.0) (2026-04-14)
 
 
