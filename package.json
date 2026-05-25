@@ -13,7 +13,7 @@
   "type": "module",
   "dependencies": {
     "bencode": "^4.0.0",
-    "bitfield": "^4.0.0",
+    "bitfield": "^5.0.0",
     "debug": "^4.2.0",
     "uint8-util": "^2.1.3"
   },
