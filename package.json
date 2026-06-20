@@ -46,7 +46,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/webtorrent/ut_metadata.git"
+    "url": "https://github.com/webtorrent/ut_metadata.git"
   },
   "scripts": {
     "test": "standard && tape test/*.js"
